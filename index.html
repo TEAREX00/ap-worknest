@@ -1658,7 +1658,7 @@ function render(){document.body.classList.toggle('wmode',!!S.widget);document.bo
 function renderSide(){
   const count=pid=>S.tasks.filter(t=>t.projectId===pid&&t.status!=='done').length;
   const mineN=S.whoami?S.tasks.filter(t=>t.createdBy===myName()&&t.status!=='done').length:0;
-  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่</small></span></div>
+  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1010c</small></span></div>
   <div class="navgrp">
     <button class="nav ${S.pid==='all'?'on':''}" data-act="pick" data-id="all"><span class="t">งานทั้งหมด</span><span class="n">${S.tasks.filter(t=>t.status!=='done').length}</span></button>
     ${S.whoami?`<button class="nav ${S.pid==='mine'?'on':''}" data-act="pick" data-id="mine"><span class="t">งานที่ฉันส่ง</span><span class="n">${mineN}</span></button>`:''}
