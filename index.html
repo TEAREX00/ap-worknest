@@ -1483,7 +1483,15 @@ function stageBar(){
 }
 (function(){const sc=document.createElement('div');sc.className='mscrim';sc.addEventListener('click',()=>document.body.classList.remove('menu-open'));document.body.appendChild(sc);
   document.addEventListener('click',e=>{if(document.body.classList.contains('menu-open')&&e.target.closest('#side [data-act="pick"]'))document.body.classList.remove('menu-open')})})();
+function dbgBox(){
+  if(!/[?&]debug=1/.test(location.search))return;
+  let b=document.getElementById('dbgbox');if(!b){b=document.createElement('pre');b.id='dbgbox';b.style.cssText='position:fixed;z-index:99;right:8px;bottom:8px;max-width:min(92vw,520px);max-height:50vh;overflow:auto;margin:0;padding:10px 12px;background:#111;color:#9f9;font:12px/1.5 monospace;border-radius:10px;white-space:pre-wrap;word-break:break-all';document.body.appendChild(b)}
+  const imgs=[...document.querySelectorAll('.memrow .av')];
+  b.textContent='รุ่น 1010c | โหมดตรวจรูป\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
+    return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n')
+}
 function afterRender(){
+  dbgBox();
   stageBar();
   whoGate();
   ovlSoon();
