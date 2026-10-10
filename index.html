@@ -1487,7 +1487,7 @@ function dbgBox(){
   if(!/[?&]debug=1/.test(location.search))return;
   let b=document.getElementById('dbgbox');if(!b){b=document.createElement('pre');b.id='dbgbox';b.style.cssText='position:fixed;z-index:99;right:8px;bottom:8px;max-width:min(92vw,520px);max-height:50vh;overflow:auto;margin:0;padding:10px 12px;background:#111;color:#9f9;font:12px/1.5 monospace;border-radius:10px;white-space:pre-wrap;word-break:break-all';document.body.appendChild(b)}
   const imgs=[...document.querySelectorAll('.memrow .av')];
-  b.textContent='รุ่น 1010c | โหมดตรวจรูป\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
+  b.textContent='รุ่น 1010d | โหมดตรวจรูป\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
     return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n');
   let d=document.getElementById('dbgx');if(!d){d=document.createElement('div');d.id='dbgx';b.appendChild(d)}
   d.innerHTML='';
@@ -1674,7 +1674,7 @@ function render(){document.body.classList.toggle('wmode',!!S.widget);document.bo
 function renderSide(){
   const count=pid=>S.tasks.filter(t=>t.projectId===pid&&t.status!=='done').length;
   const mineN=S.whoami?S.tasks.filter(t=>t.createdBy===myName()&&t.status!=='done').length:0;
-  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1010c</small></span></div>
+  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1010d</small></span></div>
   <div class="navgrp">
     <button class="nav ${S.pid==='all'?'on':''}" data-act="pick" data-id="all"><span class="t">งานทั้งหมด</span><span class="n">${S.tasks.filter(t=>t.status!=='done').length}</span></button>
     ${S.whoami?`<button class="nav ${S.pid==='mine'?'on':''}" data-act="pick" data-id="mine"><span class="t">งานที่ฉันส่ง</span><span class="n">${mineN}</span></button>`:''}
