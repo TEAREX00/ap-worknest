@@ -618,6 +618,17 @@ html.lite .th-glass .card::after,html.lite .th-glass .btn.pri::after,html.lite .
 html.lite .th-glass .top h1,html.lite .th-glass .brand .logo,html.lite .th-glass .colh .sdot,html.lite .th-glass .qpin{animation:none!important}
 html.lite .th-glass .top h1{color:#0f3a24;-webkit-text-fill-color:#0f3a24;background:none}
 html.lite .th-glass .card:hover{transform:none}
+
+#whogate{position:fixed;inset:0;z-index:95;display:grid;place-items:center;padding:16px;background:rgba(15,40,25,.35);backdrop-filter:blur(6px);animation:fadein .3s ease}
+#whogate .wg{width:min(440px,100%);background:#fff;border-radius:26px;padding:22px;box-shadow:0 30px 80px rgba(10,40,20,.3);text-align:center}
+#whogate h2{margin:0 0 4px;font-family:var(--f-display);font-size:22px}
+#whogate p{margin:0 0 16px;color:var(--muted);font-size:13.5px}
+.wgl{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+.wgb{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 8px;border-radius:18px;border:1.5px solid var(--line);background:#f7fbf8;font-size:15px;transition:all .2s}
+.wgb:hover,.wgb:focus-visible{border-color:#1f9d5a;background:#eaf7ef;transform:translateY(-2px)}
+.wgb .av{width:48px!important;height:48px!important;font-size:18px}
+.wgself input{width:100%;margin-top:14px;border:1px dashed var(--line);border-radius:12px;padding:9px 12px}
+.wgx{margin-top:10px;border:0;background:none;color:var(--muted);font-size:12.5px;text-decoration:underline}
 /* background canvas sits behind the app */
 #bgfx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .app{z-index:1}
@@ -965,11 +976,11 @@ const OK_TYPES=/^(image\/(png|jpeg|webp|gif)|application\/pdf)$/;
 const blobUrl=id=>'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w1600';
 function dropAssets(files){if(AS)for(const f of files)AS.delete(f.id).catch(()=>{})}
 function assetFail(e,name){
-  const c=e&&e.code;
+  const c=e&&e.code;if(!c&&e&&e.message){toast('แนบ '+name+' ไม่สำเร็จ: '+e.message);return}
   toast(c==='too_large'?`${name} ใหญ่เกิน 20MB ลองลดขนาดก่อนแนบ`:c==='unsupported_type'?'แนบได้เฉพาะรูป (PNG, JPG, WEBP, GIF) หรือ PDF':c==='quota_or_state'?'พื้นที่เก็บไฟล์เต็ม ลบไฟล์เก่าที่ไม่ใช้ก่อน':c==='rate_limited'?'อัปโหลดถี่เกินไป รอสักครู่แล้วลองใหม่':c==='not_granted'||c==='capability_disabled'?'บัญชีนี้แนบไฟล์ไม่ได้ ต้องมีสิทธิ์ผู้แก้ไข':'อัปโหลดไม่สำเร็จ ลองอีกครั้ง');
 }
 async function shrink(f){
-  if(!/^image\/(png|jpeg|webp)$/.test(f.type)||f.size<2.5e6)return f;
+  if(!/^image\/(png|jpeg|webp)$/.test(f.type)||f.size<6e5)return f;
   try{
     const bm=await createImageBitmap(f),k=Math.min(1,2400/Math.max(bm.width,bm.height));
     const c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);
@@ -1195,7 +1206,7 @@ function dueHtml(d,status){
 const priHtml=p=>p?`<span class="prio ${p}">${PRI[p]}</span>`:'';
 const member=id=>S.team.find(m=>m.id===id);
 function initials(n){n=String(n||'').trim();if(!n)return '?';return /^[เแโใไ]/.test(n)?n.slice(0,2):n.slice(0,1).toUpperCase()}
-const avHtml=id=>{if(!id)return `<span class="av none" title="ยังไม่มีผู้รับผิดชอบ"></span>`;const m=member(id);if(m&&m.photo)return `<span class="av ph" title="${esc(m.name)}"><img alt="" src="${esc(m.photo)}"></span>`;return `<span class="av ini" style="background:${esc(m?m.color:'var(--muted)')}" title="${esc(m?m.name:'อดีตสมาชิก')}">${esc(initials(m?m.name:'?'))}</span>`};
+const avHtml=id=>{if(!id)return `<span class="av none" title="ยังไม่มีผู้รับผิดชอบ"></span>`;const m=member(id);if(m&&m.photo)return `<span class="av ph" title="${esc(m.name)}"><img alt="" src="${esc(m.photo)}"></span>`;return `<span class="av ini" style="background:${esc(m?(m.color||memColor(m.name)):'var(--muted)')}" title="${esc(m?m.name:'อดีตสมาชิก')}">${esc(initials(m?m.name:'?'))}</span>`};
 const crossProj=()=>!proj(S.pid);
 function coverHtml(t){const f=(t.files||[]).find(x=>x.type!=='application/pdf');return f?`<img class="cover" src="${blobUrl(f.id)}" alt="" loading="lazy">`:''}
 function fcHtml(t){const n=(t.files||[]).length;return n?`<span class="fc">${n} ไฟล์</span>`:''}
@@ -1426,7 +1437,21 @@ function ovlSize(){
 }
 function ovlSoon(){if((!OVL&&!DW)||_ovlRaf)return;_ovlRaf=requestAnimationFrame(()=>{_ovlRaf=0;ovlSize();setTimeout(ovlSize,260)})}
 if(OVL||DW){setInterval(ovlSize,600);addEventListener('load',ovlSoon);addEventListener('resize',ovlSoon);['click','focusin','focusout','input','keyup'].forEach(t=>document.addEventListener(t,ovlSoon,true));document.addEventListener('scroll',ovlSoon,true)}
+function memColor(n){const P=['#e07a3a','#1f9d5a','#5f7fd6','#c24f8a','#3fb5a0','#d6a032','#7a69f0'];let h=0;for(const c of String(n||''))h=(h*31+c.charCodeAt(0))>>>0;return P[h%P.length]}
+function whoGate(){
+  const need=!S.whoami&&S.team.length>0&&!DW&&!OVL&&!S.needSetup&&!S._whoSkip;
+  let el=$('whogate');
+  if(!need){if(el)el.remove();return}
+  if(el)return;
+  el=document.createElement('div');el.id='whogate';el.setAttribute('role','dialog');el.setAttribute('aria-label','เลือกชื่อของคุณ');
+  el.innerHTML=`<div class="wg"><h2>สวัสดี คุณคือใคร?</h2><p>เลือกครั้งเดียว เครื่องนี้จะจำไว้ งานที่ลงจะขึ้นว่า "ส่งโดย" ชื่อคุณ</p>
+    <div class="wgl">${S.team.map(m=>`<button class="wgb" data-act="wgpick" data-id="${esc(m.id)}">${avHtml(m.id)}<b>${esc(m.name)}</b></button>`).join('')}</div>
+    <form data-form="selfname" class="wgself"><input id="selfname" placeholder="ไม่มีชื่อ? พิมพ์ชื่อแล้วกด Enter" maxlength="40" autocomplete="off"></form>
+    <button class="wgx" data-act="wgskip">ข้ามไปก่อน</button></div>`;
+  document.body.appendChild(el);
+}
 function afterRender(){
+  whoGate();
   ovlSoon();
   try{localStorage.setItem('ap-sheet-cache',JSON.stringify({tasks:S.tasks,team:S.team,projects:S.projects}))}catch(e){}
   updateSyncBadge();scheduleSync();
@@ -2039,6 +2064,8 @@ document.addEventListener('click',e=>{
   else if(a==='copylink'){copyText(SYNC.url)}
   else if(a==='changelink'){S.needSetup=true;render()}
   else if(a==='sheetcancel'){S.needSetup=false;render()}
+  else if(a==='wgpick'){setWho(id)}
+  else if(a==='wgskip'){S._whoSkip=true;whoGate()}
   else if(a==='summ'){SUM.month=id;renderCanvas();sumLoad()}
   else if(a==='motion'){try{localStorage.setItem('wn-calm',CALM?'0':'1')}catch(e){}location.reload()}
   else if(a==='widget')setWidget(true);
