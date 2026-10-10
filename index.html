@@ -1206,7 +1206,7 @@ function dueHtml(d,status){
 const priHtml=p=>p?`<span class="prio ${p}">${PRI[p]}</span>`:'';
 const member=id=>S.team.find(m=>m.id===id);
 function initials(n){n=String(n||'').trim();if(!n)return '?';return /^[เแโใไ]/.test(n)?n.slice(0,2):n.slice(0,1).toUpperCase()}
-const avHtml=id=>{if(!id)return `<span class="av none" title="ยังไม่มีผู้รับผิดชอบ"></span>`;const m=member(id);if(m&&m.photo)return `<span class="av ph" title="${esc(m.name)}"><img alt="" src="${esc(m.photo)}"></span>`;return `<span class="av ini" style="background:${esc(m?(m.color||memColor(m.name)):'var(--muted)')}" title="${esc(m?m.name:'อดีตสมาชิก')}">${esc(initials(m?m.name:'?'))}</span>`};
+const avHtml=id=>{if(!id)return `<span class="av none" title="ยังไม่มีผู้รับผิดชอบ"></span>`;const m=member(id);if(m&&m.photo&&/^data:image\/|^https:/.test(m.photo))return `<span class="av ph" title="${esc(m.name)}" data-c="${esc(m.color||memColor(m.name))}" data-i="${esc(initials(m.name))}"><img alt="" src="${esc(m.photo)}" onerror="const p=this.parentNode;p.className='av ini';p.style.background=p.dataset.c;p.textContent=p.dataset.i"></span>`;return `<span class="av ini" style="background:${esc(m?(m.color||memColor(m.name)):'var(--muted)')}" title="${esc(m?m.name:'อดีตสมาชิก')}">${esc(initials(m?m.name:'?'))}</span>`};
 const crossProj=()=>!proj(S.pid);
 function coverHtml(t){const f=(t.files||[]).find(x=>x.type!=='application/pdf');return f?`<img class="cover" src="${blobUrl(f.id)}" alt="" loading="lazy">`:''}
 function fcHtml(t){const n=(t.files||[]).length;return n?`<span class="fc">${n} ไฟล์</span>`:''}
@@ -1456,6 +1456,8 @@ function afterRender(){
   try{localStorage.setItem('ap-sheet-cache',JSON.stringify({tasks:S.tasks,team:S.team,projects:S.projects}))}catch(e){}
   updateSyncBadge();scheduleSync();
 }
+const APP_URL='https://tearex00.github.io/ap-worknest/';
+function teamLink(){return SYNC.url&&SYNC.url!=='gas'?APP_URL+'?sheet='+encodeURIComponent(SYNC.url):APP_URL}
 function copyText(t){
   const done=()=>toast('คัดลอกลิงก์แล้ว ส่งให้ทีมเปิดในมือถือหรือคอมได้เลย');
   if(navigator.clipboard)navigator.clipboard.writeText(t).then(done,()=>fallback());else fallback();
@@ -2061,7 +2063,7 @@ document.addEventListener('click',e=>{
   else if(a==='ack'){ackAlert(id)}
   else if(a==='ackdone'){const q=S.quick.find(x=>x.id===id);if(q)saveQuick(S.quick.map(x=>x.id===id?{...x,done:true,doneAt:Date.now()}:x));ackAlert(el.dataset.aid);burst()}
   else if(a==='ackopen'){ackAlert(el.dataset.aid);openPanel(id)}
-  else if(a==='copylink'){copyText(SYNC.url)}
+  else if(a==='copylink'){copyText(teamLink())}
   else if(a==='changelink'){S.needSetup=true;render()}
   else if(a==='sheetcancel'){S.needSetup=false;render()}
   else if(a==='wgpick'){setWho(id)}
