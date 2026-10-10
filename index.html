@@ -1488,7 +1488,15 @@ function dbgBox(){
   let b=document.getElementById('dbgbox');if(!b){b=document.createElement('pre');b.id='dbgbox';b.style.cssText='position:fixed;z-index:99;right:8px;bottom:8px;max-width:min(92vw,520px);max-height:50vh;overflow:auto;margin:0;padding:10px 12px;background:#111;color:#9f9;font:12px/1.5 monospace;border-radius:10px;white-space:pre-wrap;word-break:break-all';document.body.appendChild(b)}
   const imgs=[...document.querySelectorAll('.memrow .av')];
   b.textContent='รุ่น 1010c | โหมดตรวจรูป\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
-    return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n')
+    return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n');
+  let d=document.getElementById('dbgx');if(!d){d=document.createElement('div');d.id='dbgx';b.appendChild(d)}
+  d.innerHTML='';
+  S.team.filter(m=>m.photo).forEach(m=>{const row=document.createElement('div');row.style.cssText='margin-top:8px;display:flex;gap:10px;align-items:center;color:#fff';
+    const t=new Image();const info=document.createElement('span');info.textContent=m.name+': กำลังตรวจ…';
+    t.onload=()=>{try{const k=document.createElement('canvas');k.width=k.height=8;const x=k.getContext('2d');x.drawImage(t,0,0,8,8);const q=x.getImageData(0,0,8,8).data;let r=0,g=0,bl=0,mn=255;for(let i=0;i<q.length;i+=4){r+=q[i];g+=q[i+1];bl+=q[i+2];mn=Math.min(mn,q[i],q[i+1],q[i+2])}const n=q.length/4;info.textContent=m.name+': โหลดได้ '+t.naturalWidth+'x'+t.naturalHeight+' | สีเฉลี่ย '+Math.round(r/n)+','+Math.round(g/n)+','+Math.round(bl/n)+' | เข้มสุด '+mn}catch(e){info.textContent=m.name+': โหลดได้ แต่อ่านสีไม่ได้ '+e}};
+    t.onerror=()=>{info.textContent=m.name+': โหลดไม่ได้ (ไฟล์รูปเสียหรือตัดขาด)'};
+    t.src=m.photo;const big=new Image();big.src=m.photo;big.style.cssText='width:96px;height:96px;border:2px solid #fff;border-radius:50%;background:#444';
+    row.appendChild(big);row.appendChild(info);d.appendChild(row)});
 }
 function afterRender(){
   dbgBox();
