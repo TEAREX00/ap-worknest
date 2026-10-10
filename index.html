@@ -689,7 +689,7 @@ a.mcard:hover{border-color:var(--accent)}
 .qwho{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;flex-wrap:wrap}
 .qwho .av{width:28px;height:28px}
 .qself input{width:100%;border:1px dashed color-mix(in srgb,var(--ap-y) 55%,var(--line));border-radius:9px;padding:7px 10px;background:var(--surface);font-size:13px}
-.av.ph{border:0;overflow:hidden}.av.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.av.avp{border:0;overflow:hidden}.av.avp img{width:100%;height:100%;object-fit:cover;display:block}
 .qfrom img{width:16px;height:16px;border-radius:50%;object-fit:cover;vertical-align:-3px;margin-right:4px;margin-left:-4px}
 .qwho select{flex:1;min-width:0;border:1px solid color-mix(in srgb,var(--ap-y) 55%,var(--line));border-radius:9px;padding:7px 10px;background:var(--surface)}
 .qfrom{display:inline-block;font-size:11px;font-weight:600;color:#fff;background:var(--hi);border-radius:999px;padding:0 8px;margin-right:6px;vertical-align:1px}
@@ -1227,7 +1227,7 @@ function dueHtml(d,status){
 const priHtml=p=>p?`<span class="prio ${p}">${PRI[p]}</span>`:'';
 const member=id=>S.team.find(m=>m.id===id);
 function initials(n){n=String(n||'').trim();if(!n)return '?';return /^[เแโใไ]/.test(n)?n.slice(0,2):n.slice(0,1).toUpperCase()}
-const avHtml=id=>{if(!id)return `<span class="av none" title="ยังไม่มีผู้รับผิดชอบ"></span>`;const m=member(id);if(m&&m.photo&&/^data:image\/|^https:/.test(m.photo))return `<span class="av ph" title="${esc(m.name)}" data-c="${esc(m.color||memColor(m.name))}" data-i="${esc(initials(m.name))}"><img loading="eager" decoding="sync" alt="" src="${esc(m.photo)}" onerror="const p=this.parentNode;p.className='av ini';p.style.background=p.dataset.c;p.textContent=p.dataset.i" onload="try{const k=document.createElement('canvas');k.width=k.height=8;const x=k.getContext('2d');x.drawImage(this,0,0,8,8);const d=x.getImageData(0,0,8,8).data;let m=255;for(let i=0;i<d.length;i+=4)m=Math.min(m,d[i],d[i+1],d[i+2]);if(m>240)this.onerror()}catch(e){}"></span>`;return `<span class="av ini" style="background:${esc(m?(m.color||memColor(m.name)):'var(--muted)')}" title="${esc(m?m.name:'อดีตสมาชิก')}">${esc(initials(m?m.name:'?'))}</span>`};
+const avHtml=id=>{if(!id)return `<span class="av none" title="ยังไม่มีผู้รับผิดชอบ"></span>`;const m=member(id);if(m&&m.photo&&/^data:image\/|^https:/.test(m.photo))return `<span class="av avp" title="${esc(m.name)}" data-c="${esc(m.color||memColor(m.name))}" data-i="${esc(initials(m.name))}"><img loading="eager" decoding="sync" alt="" src="${esc(m.photo)}" onerror="const p=this.parentNode;p.className='av ini';p.style.background=p.dataset.c;p.textContent=p.dataset.i" onload="try{const k=document.createElement('canvas');k.width=k.height=8;const x=k.getContext('2d');x.drawImage(this,0,0,8,8);const d=x.getImageData(0,0,8,8).data;let m=255;for(let i=0;i<d.length;i+=4)m=Math.min(m,d[i],d[i+1],d[i+2]);if(m>240)this.onerror()}catch(e){}"></span>`;return `<span class="av ini" style="background:${esc(m?(m.color||memColor(m.name)):'var(--muted)')}" title="${esc(m?m.name:'อดีตสมาชิก')}">${esc(initials(m?m.name:'?'))}</span>`};
 const crossProj=()=>!proj(S.pid);
 function coverHtml(t){const f=(t.files||[]).find(x=>x.type!=='application/pdf');return f?`<img class="cover" src="${blobUrl(f.id)}" alt="" loading="lazy">`:''}
 function fcHtml(t){const n=(t.files||[]).length;return n?`<span class="fc">${n} ไฟล์</span>`:''}
@@ -1487,7 +1487,7 @@ function dbgBox(){
   if(!/[?&]debug=1/.test(location.search))return;
   let b=document.getElementById('dbgbox');if(!b){b=document.createElement('pre');b.id='dbgbox';b.style.cssText='position:fixed;z-index:99;right:8px;bottom:8px;max-width:min(92vw,520px);max-height:50vh;overflow:auto;margin:0;padding:10px 12px;background:#111;color:#9f9;font:12px/1.5 monospace;border-radius:10px;white-space:pre-wrap;word-break:break-all';document.body.appendChild(b)}
   const imgs=[...document.querySelectorAll('.memrow .av')];
-  b.textContent='รุ่น 1010d | โหมดตรวจรูป\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
+  b.textContent='รุ่น 1010e | โหมดตรวจรูป\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
     return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n');
   let d=document.getElementById('dbgx');if(!d){d=document.createElement('div');d.id='dbgx';b.appendChild(d)}
   d.innerHTML='';
@@ -1674,7 +1674,7 @@ function render(){document.body.classList.toggle('wmode',!!S.widget);document.bo
 function renderSide(){
   const count=pid=>S.tasks.filter(t=>t.projectId===pid&&t.status!=='done').length;
   const mineN=S.whoami?S.tasks.filter(t=>t.createdBy===myName()&&t.status!=='done').length:0;
-  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1010d</small></span></div>
+  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1010e</small></span></div>
   <div class="navgrp">
     <button class="nav ${S.pid==='all'?'on':''}" data-act="pick" data-id="all"><span class="t">งานทั้งหมด</span><span class="n">${S.tasks.filter(t=>t.status!=='done').length}</span></button>
     ${S.whoami?`<button class="nav ${S.pid==='mine'?'on':''}" data-act="pick" data-id="mine"><span class="t">งานที่ฉันส่ง</span><span class="n">${mineN}</span></button>`:''}
