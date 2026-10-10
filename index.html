@@ -809,6 +809,27 @@ a.mcard:hover{border-color:var(--accent)}
   transform-origin:left;animation:draw .9s cubic-bezier(.65,0,.25,1) both}
 .side,.mbar{padding-top:calc(18px + 4px)}
 @media (max-width:1024px){.mbar{padding-top:16px}}
+.menubtn{display:none}.hb{display:grid;gap:4px}.hb i{width:18px;height:2px;background:currentColor;border-radius:2px}
+.mscrim{display:none}.stg{display:none}
+@media (max-width:1024px){
+  .menubtn{display:inline-flex;align-items:center;justify-content:center;background:var(--side-hi);color:var(--side-fg);border:0;width:40px;height:40px;min-height:0;padding:0;border-radius:10px;flex:none}
+  .side{display:flex!important;position:fixed;z-index:50;top:0;bottom:0;left:0;width:min(84vw,320px);transform:translateX(-106%);transition:transform .25s ease;margin:0!important;border-radius:0 24px 24px 0!important;box-shadow:0 0 40px rgba(10,30,20,.28);padding:26px 14px 20px;visibility:hidden}
+  body.menu-open .side{transform:none;visibility:visible}
+  .mscrim{display:block;position:fixed;inset:0;z-index:49;background:rgba(10,30,20,.38);opacity:0;pointer-events:none;transition:opacity .2s}
+  body.menu-open .mscrim{opacity:1;pointer-events:auto}
+  .th-glass .side{background:rgba(247,252,249,.97)}
+  .sumbtn{white-space:nowrap;flex:none}
+  .tabs{flex-wrap:wrap;gap:8px}
+  .wtoggle,.motbtn{display:none}
+}
+@media (max-width:760px){
+  .stg{display:flex;gap:8px;overflow-x:auto;padding:0 0 12px;scrollbar-width:none}
+  .stg::-webkit-scrollbar{display:none}
+  .stg button{flex:none;border:0;border-radius:999px;padding:9px 14px;background:rgba(255,255,255,.85);font:inherit;font-weight:600;font-size:14px;color:var(--ink);box-shadow:0 2px 8px rgba(20,60,40,.08);display:inline-flex;align-items:center;gap:7px}
+  .stg button i{width:9px;height:9px;border-radius:50%;background:var(--sc)}
+  .stg button b{font-weight:600;opacity:.6}
+  .stg button.on{background:var(--sc);color:#fff}.stg button.on i{background:#fff}
+}
 @keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -1206,7 +1227,7 @@ function dueHtml(d,status){
 const priHtml=p=>p?`<span class="prio ${p}">${PRI[p]}</span>`:'';
 const member=id=>S.team.find(m=>m.id===id);
 function initials(n){n=String(n||'').trim();if(!n)return '?';return /^[เแโใไ]/.test(n)?n.slice(0,2):n.slice(0,1).toUpperCase()}
-const avHtml=id=>{if(!id)return `<span class="av none" title="ยังไม่มีผู้รับผิดชอบ"></span>`;const m=member(id);if(m&&m.photo&&/^data:image\/|^https:/.test(m.photo))return `<span class="av ph" title="${esc(m.name)}" data-c="${esc(m.color||memColor(m.name))}" data-i="${esc(initials(m.name))}"><img alt="" src="${esc(m.photo)}" onerror="const p=this.parentNode;p.className='av ini';p.style.background=p.dataset.c;p.textContent=p.dataset.i" onload="try{const k=document.createElement('canvas');k.width=k.height=8;const x=k.getContext('2d');x.drawImage(this,0,0,8,8);const d=x.getImageData(0,0,8,8).data;let m=255;for(let i=0;i<d.length;i+=4)m=Math.min(m,d[i],d[i+1],d[i+2]);if(m>240)this.onerror()}catch(e){}"></span>`;return `<span class="av ini" style="background:${esc(m?(m.color||memColor(m.name)):'var(--muted)')}" title="${esc(m?m.name:'อดีตสมาชิก')}">${esc(initials(m?m.name:'?'))}</span>`};
+const avHtml=id=>{if(!id)return `<span class="av none" title="ยังไม่มีผู้รับผิดชอบ"></span>`;const m=member(id);if(m&&m.photo&&/^data:image\/|^https:/.test(m.photo))return `<span class="av ph" title="${esc(m.name)}" data-c="${esc(m.color||memColor(m.name))}" data-i="${esc(initials(m.name))}"><img loading="eager" decoding="sync" alt="" src="${esc(m.photo)}" onerror="const p=this.parentNode;p.className='av ini';p.style.background=p.dataset.c;p.textContent=p.dataset.i" onload="try{const k=document.createElement('canvas');k.width=k.height=8;const x=k.getContext('2d');x.drawImage(this,0,0,8,8);const d=x.getImageData(0,0,8,8).data;let m=255;for(let i=0;i<d.length;i+=4)m=Math.min(m,d[i],d[i+1],d[i+2]);if(m>240)this.onerror()}catch(e){}"></span>`;return `<span class="av ini" style="background:${esc(m?(m.color||memColor(m.name)):'var(--muted)')}" title="${esc(m?m.name:'อดีตสมาชิก')}">${esc(initials(m?m.name:'?'))}</span>`};
 const crossProj=()=>!proj(S.pid);
 function coverHtml(t){const f=(t.files||[]).find(x=>x.type!=='application/pdf');return f?`<img class="cover" src="${blobUrl(f.id)}" alt="" loading="lazy">`:''}
 function fcHtml(t){const n=(t.files||[]).length;return n?`<span class="fc">${n} ไฟล์</span>`:''}
@@ -1450,7 +1471,20 @@ function whoGate(){
     <button class="wgx" data-act="wgskip">ข้ามไปก่อน</button></div>`;
   document.body.appendChild(el);
 }
+function stageBar(){
+  const b=document.querySelector('.board');if(!b||document.querySelector('.stg')||!matchMedia('(max-width:760px)').matches)return;
+  const cols=[...b.querySelectorAll('.col')];
+  const bar=document.createElement('div');bar.className='stg';
+  bar.innerHTML=cols.map((c,i)=>`<button type="button" data-i="${i}" style="--sc:${c.style.getPropertyValue('--sc')}"><i></i>${c.querySelector('.colh').childNodes[1].textContent.trim()}<b>${c.querySelector('.n').textContent}</b></button>`).join('');
+  b.parentNode.insertBefore(bar,b);
+  const mark=()=>{const w=cols[0].getBoundingClientRect().width||1,i=Math.min(cols.length-1,Math.round(b.scrollLeft/(w+12)));bar.querySelectorAll('button').forEach((x,j)=>x.classList.toggle('on',j===i));const on=bar.children[i];if(on)bar.scrollLeft=on.offsetLeft-16};
+  bar.addEventListener('click',e=>{const x=e.target.closest('button');if(!x)return;cols[+x.dataset.i].scrollIntoView({behavior:'smooth',inline:'start',block:'nearest'})});
+  b.addEventListener('scroll',()=>requestAnimationFrame(mark),{passive:true});mark();
+}
+(function(){const sc=document.createElement('div');sc.className='mscrim';sc.addEventListener('click',()=>document.body.classList.remove('menu-open'));document.body.appendChild(sc);
+  document.addEventListener('click',e=>{if(document.body.classList.contains('menu-open')&&e.target.closest('#side [data-act="pick"]'))document.body.classList.remove('menu-open')})})();
 function afterRender(){
+  stageBar();
   whoGate();
   ovlSoon();
   try{localStorage.setItem('ap-sheet-cache',JSON.stringify({tasks:S.tasks,team:S.team,projects:S.projects}))}catch(e){}
@@ -1645,7 +1679,7 @@ function renderSide(){
   $('side').innerHTML=h;
   if(S.addingMem){const i=$('memname');i&&i.focus()}
   // mobile bar
-  let m=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"></div><select id="mpick" aria-label="เลือกโปรเจกต์"><option value="all">งานทั้งหมด</option>${S.whoami?'<option value="mine">งานที่ฉันส่ง</option>':''}${S.projects.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}${S.team.map(m=>`<option value="who:${esc(m.id)}">งานที่ ${esc(m.name)} ส่ง</option>`).join('')}</select>${canWrite()?'<button class="btn mplus" data-act="newproj-m" aria-label="สร้างโปรเจกต์ใหม่" title="สร้างโปรเจกต์ใหม่">+</button>':''}`;
+  let m=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"></div><button class="btn menubtn" data-act="menu" aria-label="เมนู ทีม ลิงก์แชร์ ซิงก์" title="เมนู"><span class="hb"><i></i><i></i><i></i></span></button><select id="mpick" aria-label="เลือกโปรเจกต์"><option value="all">งานทั้งหมด</option>${S.whoami?'<option value="mine">งานที่ฉันส่ง</option>':''}${S.projects.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}${S.team.map(m=>`<option value="who:${esc(m.id)}">งานที่ ${esc(m.name)} ส่ง</option>`).join('')}</select>${canWrite()?'<button class="btn mplus" data-act="newproj-m" aria-label="สร้างโปรเจกต์ใหม่" title="สร้างโปรเจกต์ใหม่">+</button>':''}`;
   $('mbar').innerHTML=m;$('mpick').value=S.pid;
   if(S.addingProject){const i=$('projname');i&&i.focus()}
 }
@@ -1887,7 +1921,7 @@ function quickListHtml(){
   return items.map(q=>{const due=!TEAM&&!q.done&&q.remindAt&&q.remindAt<=now;
     return `<div class="qi ${q.done?'done':''} ${due?'due':''}">
       <button class="qtick" data-act="qtick" data-id="${esc(q.id)}" aria-label="${q.done?'ยกเลิกเสร็จ':'ทำเครื่องหมายว่าเสร็จ'}: ${esc(q.text)}">✓</button>
-      <span class="qt">${q.from?`<b class="qfrom">${(S.team.find(m=>m.name===q.from)||{}).photo?`<img alt="" src="${esc(S.team.find(m=>m.name===q.from).photo)}">`:''}${esc(q.from)}</b>`:''}${esc(q.text)}${qWhen(q)}</span>
+      <span class="qt">${q.from?`<b class="qfrom">${(S.team.find(m=>m.name===q.from)||{}).photo?`<img loading="eager" decoding="sync" alt="" src="${esc(S.team.find(m=>m.name===q.from).photo)}">`:''}${esc(q.from)}</b>`:''}${esc(q.text)}${qWhen(q)}</span>
       ${!q.done&&canWrite()&&!TEAM?`<button class="qmini" data-act="qpromote" data-id="${esc(q.id)}" title="ย้ายเป็นงานในบอร์ด (ขั้นออกแบบ)">เข้าบอร์ด</button>`:''}
       <button class="qmini x" data-act="qdel" data-id="${esc(q.id)}" aria-label="ลบ ${esc(q.text)}">×</button>
     </div>`}).join('');
@@ -2075,6 +2109,7 @@ document.addEventListener('click',e=>{
   else if(a==='wsec'){S.wclosed=S.wclosed.includes(id)?S.wclosed.filter(x=>x!==id):[...S.wclosed,id];try{localStorage.setItem('wn-wclosed',JSON.stringify(S.wclosed))}catch(e){}renderCanvas()}
   else if(a==='wnext'){e.stopPropagation();const t=S.tasks.find(x=>x.id===id);const i=STATUSES.findIndex(x=>x.id===(t&&t.status));if(t&&canWrite()&&i>=0&&i<STATUSES.length-1)patchTask(id,{status:STATUSES[i+1].id});return}
   else if(a==='setphoto'){pickPhoto(id)}
+  else if(a==='menu'){document.body.classList.toggle('menu-open')}
   else if(a==='newmem'){S.addingMem=true;renderSide()}
   else if(a==='delmem'){S.confirmMem=id;renderSide()}
   else if(a==='delmem-yes')removeMember(id);
