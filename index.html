@@ -809,6 +809,16 @@ a.mcard:hover{border-color:var(--accent)}
   transform-origin:left;animation:draw .9s cubic-bezier(.65,0,.25,1) both}
 .side,.mbar{padding-top:calc(18px + 4px)}
 @media (max-width:1024px){.mbar{padding-top:16px}}
+.ordrow{display:flex;align-items:center;gap:6px;margin:-2px 0}
+.ordrow .sp{flex:1}
+.ordn{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:rgba(20,35,27,.09);color:var(--ink);font-size:12px;font-weight:700}
+.ordn.first{background:#137a45;color:#fff}
+.ordrow em{font-style:normal;font-size:12px;font-weight:600;color:#137a45}
+.ordbtn{display:inline-grid;place-items:center;width:26px;height:24px;border-radius:8px;background:rgba(255,255,255,.85);border:1px solid var(--line);font-size:10px;color:var(--muted);cursor:pointer;user-select:none}
+.ordbtn:hover{color:var(--ink);background:#fff}
+.ordbtn.off{opacity:.25;pointer-events:none}
+.ordreset{margin-left:auto;font-size:11.5px;font-weight:600;color:#137a45;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:999px;padding:3px 9px;cursor:pointer}
+@media (pointer:coarse){.ordbtn{width:36px;height:32px;font-size:12px}.ordreset{padding:6px 12px}}
 .menubtn{display:none}.hb{display:grid;gap:4px}.hb i{width:18px;height:2px;background:currentColor;border-radius:2px}
 .mscrim{display:none}.stg{display:none}
 @media (max-width:1024px){
@@ -1326,7 +1336,7 @@ addEventListener('resize',()=>{const w=innerWidth<=760;if(w!==_rw){_rw=w;if(S.vi
 /* ---------- Google Sheet sync ---------- */
 // Local state is the screen; every change is diffed against the last server copy (base) and sent to Apps Script.
 // The server answers with the whole sheet; changes made while a request was in flight are kept and sent next round.
-const TC=['id','title','status','priority','due','assignee','notes','files','projectId','createdAt','updatedAt','completedAt','createdBy'];
+const TC=['id','title','status','priority','due','assignee','notes','files','projectId','createdAt','updatedAt','completedAt','createdBy','ord'];
 const QC=['id','text','from','remindAt','done','doneAt','at'];
 const MC=['id','name','color','photo'];
 const SHOP={id:'shop',name:'งานโรงพิมพ์',color:'#e07a3f',createdAt:1};
@@ -1487,7 +1497,7 @@ function dbgBox(){
   if(!/[?&]debug=1/.test(location.search))return;
   let b=document.getElementById('dbgbox');if(!b){b=document.createElement('pre');b.id='dbgbox';b.style.cssText='position:fixed;z-index:99;right:8px;bottom:8px;max-width:min(92vw,520px);max-height:50vh;overflow:auto;margin:0;padding:10px 12px;background:#111;color:#9f9;font:12px/1.5 monospace;border-radius:10px;white-space:pre-wrap;word-break:break-all';document.body.appendChild(b)}
   const imgs=[...document.querySelectorAll('.memrow .av')];
-  b.textContent='รุ่น 1010e | โหมดตรวจรูป\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
+  b.textContent='รุ่น 1012a | โหมดตรวจรูป\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
     return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n');
   let d=document.getElementById('dbgx');if(!d){d=document.createElement('div');d.id='dbgx';b.appendChild(d)}
   d.innerHTML='';
@@ -1674,7 +1684,7 @@ function render(){document.body.classList.toggle('wmode',!!S.widget);document.bo
 function renderSide(){
   const count=pid=>S.tasks.filter(t=>t.projectId===pid&&t.status!=='done').length;
   const mineN=S.whoami?S.tasks.filter(t=>t.createdBy===myName()&&t.status!=='done').length:0;
-  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1010e</small></span></div>
+  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1012a</small></span></div>
   <div class="navgrp">
     <button class="nav ${S.pid==='all'?'on':''}" data-act="pick" data-id="all"><span class="t">งานทั้งหมด</span><span class="n">${S.tasks.filter(t=>t.status!=='done').length}</span></button>
     ${S.whoami?`<button class="nav ${S.pid==='mine'?'on':''}" data-act="pick" data-id="mine"><span class="t">งานที่ฉันส่ง</span><span class="n">${mineN}</span></button>`:''}
@@ -1752,13 +1762,24 @@ function renderCanvas(){
   if(S.adding){const i=$('qadd');i&&i.focus()}
 }
 
+const ORDST=['design','prod'];
+const isOrd=s=>ORDST.includes(s);
+const ordv=t=>(t.ord===''||t.ord==null)?NaN:Number(t.ord);
+function ordSort(list){const has=t=>isFinite(ordv(t));return [...list.filter(has).sort((x,y)=>ordv(x)-ordv(y)),...list.filter(t=>!has(t))]}
+function ordList(st){return ordSort(visible().filter(t=>t.status===st))}
+function ordApply(list,st,movedId){list.forEach((t,i)=>{const o=(i+1)*10;if(t.id===movedId)patchTask(t.id,{ord:o,status:st});else if(ordv(t)!==o)patchTask(t.id,{ord:o})})}
+function moveOrd(id,dir){const t=S.tasks.find(x=>x.id===id);if(!t||!canWrite())return;const list=ordList(t.status),i=list.findIndex(x=>x.id===id),j=i+dir;if(i<0||j<0||j>=list.length)return;[list[i],list[j]]=[list[j],list[i]];ordApply(list,t.status,null)}
+function dropOrd(id,st,beforeId){const list=ordList(st).filter(x=>x.id!==id),t=S.tasks.find(x=>x.id===id);if(!t)return;const k=beforeId?list.findIndex(x=>x.id===beforeId):-1;if(k<0)list.push(t);else list.splice(k,0,t);ordApply(list,st,id)}
+function ordReset(st){S.tasks.filter(t=>t.status===st&&isFinite(ordv(t))).forEach(t=>patchTask(t.id,{ord:null}));toast('กลับไปเรียงตามกำหนดส่งอัตโนมัติแล้ว')}
+function ordRow(t,i,n,st){if(!isOrd(st))return '';const w=canWrite();
+  return `<span class="ordrow"><b class="ordn${i===0?' first':''}">${i+1}</b>${i===0?'<em>ทำก่อน</em>':''}<span class="sp"></span>${w?`<span class="ordbtn${i===0?' off':''}" role="button" data-act="ordup" data-id="${esc(t.id)}" aria-label="เลื่อนขึ้น" title="เลื่อนขึ้น">▲</span><span class="ordbtn${i===n-1?' off':''}" role="button" data-act="orddn" data-id="${esc(t.id)}" aria-label="เลื่อนลง" title="เลื่อนลง">▼</span>`:''}</span>`}
 function boardHtml(ts){
   const showP=crossProj();
   return `<div class="board">${STATUSES.map(s=>{
-    const list=ts.filter(t=>t.status===s.id);
-    return `<div class="col" data-drop="${s.id}" style="--sc:${s.c};--d:${STATUSES.indexOf(s)*70}ms"><div class="colh"><i class="sdot"></i>${s.name} <span class="n">${list.length}</span>${s.id==='done'?CAT_SIT:''}</div>${list.length?'':`<div class="nap">${CAT_NAP}<span class="zz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></span><small>${s.id==='done'?'ยังไม่มีงานเสร็จ แมวรออยู่':'ว่างแล้ว แมวขอนอนก่อน'}</small></div>`}
+    let list=ts.filter(t=>t.status===s.id);if(isOrd(s.id))list=ordSort(list);
+    return `<div class="col" data-drop="${s.id}" style="--sc:${s.c};--d:${STATUSES.indexOf(s)*70}ms"><div class="colh"><i class="sdot"></i>${s.name} <span class="n">${list.length}</span>${s.id==='done'?CAT_SIT:''}${isOrd(s.id)&&canWrite()&&list.some(t=>isFinite(ordv(t)))?`<span class="ordreset" role="button" data-act="ordreset" data-id="${s.id}" title="ล้างลำดับที่จัดเอง แล้วเรียงตามกำหนดส่ง">เรียงอัตโนมัติ</span>`:''}</div>${list.length?'':`<div class="nap">${CAT_NAP}<span class="zz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></span><small>${s.id==='done'?'ยังไม่มีงานเสร็จ แมวรออยู่':'ว่างแล้ว แมวขอนอนก่อน'}</small></div>`}
     ${list.map((t,i)=>`<button style="--i:${i}" class="card ${fxClass(t)} ${t.status==='done'?'done':''} ${t.id===S.flash?'arrive':''}" draggable="${canWrite()}" data-act="open" data-id="${esc(t.id)}">
-      ${fxDeco(t)}${coverHtml(t)}<span class="tt">${esc(t.title||'งานใหม่ (กำลังกรอก)')}</span><span class="sprog" aria-hidden="true">${STATUSES.map((x,k)=>`<i class="${k<=STATUSES.findIndex(z=>z.id===t.status)?'on':''}"></i>`).join('')}<em>${esc((STATUSES.find(z=>z.id===t.status)||{}).name||'')}</em></span>
+      ${ordRow(t,i,list.length,s.id)}${fxDeco(t)}${coverHtml(t)}<span class="tt">${esc(t.title||'งานใหม่ (กำลังกรอก)')}</span><span class="sprog" aria-hidden="true">${STATUSES.map((x,k)=>`<i class="${k<=STATUSES.findIndex(z=>z.id===t.status)?'on':''}"></i>`).join('')}<em>${esc((STATUSES.find(z=>z.id===t.status)||{}).name||'')}</em></span>
       ${showP?`<span class="meta">${pchip(t.projectId)}</span>`:''}
       <span class="meta">${priHtml(t.priority)}${dueHtml(t.due,t.status)}${fcHtml(t)}<span class="r">${fromHtml(t)}</span></span>
     </button>`).join('')}
@@ -2125,6 +2146,9 @@ document.addEventListener('click',e=>{
   else if(a==='wsec'){S.wclosed=S.wclosed.includes(id)?S.wclosed.filter(x=>x!==id):[...S.wclosed,id];try{localStorage.setItem('wn-wclosed',JSON.stringify(S.wclosed))}catch(e){}renderCanvas()}
   else if(a==='wnext'){e.stopPropagation();const t=S.tasks.find(x=>x.id===id);const i=STATUSES.findIndex(x=>x.id===(t&&t.status));if(t&&canWrite()&&i>=0&&i<STATUSES.length-1)patchTask(id,{status:STATUSES[i+1].id});return}
   else if(a==='setphoto'){pickPhoto(id)}
+  else if(a==='ordup'){moveOrd(id,-1)}
+  else if(a==='orddn'){moveOrd(id,1)}
+  else if(a==='ordreset'){ordReset(id)}
   else if(a==='menu'){document.body.classList.toggle('menu-open')}
   else if(a==='newmem'){S.addingMem=true;renderSide()}
   else if(a==='delmem'){S.confirmMem=id;renderSide()}
@@ -2211,7 +2235,7 @@ let dragId=null;
 document.addEventListener('dragstart',e=>{const c=e.target.closest('.card');if(!c)return;dragId=c.dataset.id;c.classList.add('dragging');e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain',dragId)}catch(_){}});
 document.addEventListener('dragend',e=>{e.target.closest?.('.card')?.classList.remove('dragging');document.querySelectorAll('.col.over').forEach(c=>c.classList.remove('over'))});
 document.addEventListener('dragover',e=>{const col=e.target.closest('[data-drop]');if(!col||!dragId)return;e.preventDefault();document.querySelectorAll('.col.over').forEach(c=>c!==col&&c.classList.remove('over'));col.classList.add('over')});
-document.addEventListener('drop',e=>{const col=e.target.closest('[data-drop]');if(!col||!dragId)return;e.preventDefault();const s=col.dataset.drop,t=S.tasks.find(x=>x.id===dragId);dragId=null;col.classList.remove('over');if(t&&t.status!==s)patchTask(t.id,{status:s})});
+document.addEventListener('drop',e=>{const col=e.target.closest('[data-drop]');if(!col||!dragId)return;e.preventDefault();const s=col.dataset.drop,t=S.tasks.find(x=>x.id===dragId);dragId=null;col.classList.remove('over');if(t){const bc=e.target.closest('.card'),bid=bc?bc.dataset.id:null;if(isOrd(s)&&canWrite()){if(bid===t.id)return;dropOrd(t.id,s,bid)}else if(t.status!==s)patchTask(t.id,{status:s})}});
 
 /* ---------- boot ---------- */
 function demoData(){
