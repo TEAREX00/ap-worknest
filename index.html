@@ -809,6 +809,7 @@ a.mcard:hover{border-color:var(--accent)}
   transform-origin:left;animation:draw .9s cubic-bezier(.65,0,.25,1) both}
 .side,.mbar{padding-top:calc(18px + 4px)}
 @media (max-width:1024px){.mbar{padding-top:16px}}
+.memname{cursor:default}.memname:hover{background:transparent!important;transform:none}
 .ordrow{display:flex;align-items:center;gap:6px;margin:-2px 0}
 .ordrow .sp{flex:1}
 .ordn{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:rgba(20,35,27,.09);color:var(--ink);font-size:12px;font-weight:700}
@@ -1404,6 +1405,7 @@ function applyServer(res,sent){
   const sq=res.quick||[],sm=res.team||[];
   if(res.sheetUrl)SYNC.sheetUrl=res.sheetUrl;
   SYNC.months=res.months||[];
+  if(st.length)SYNC.ordOk=st.some(t=>'ord' in t);
   const first=!SYNC.known;
   S.tasks=mergeArr(st,S.tasks,TC,sent&&sent.t);
   S.quick=mergeArr(sq,S.quick,QC,sent&&sent.q);
@@ -1497,7 +1499,7 @@ function dbgBox(){
   if(!/[?&]debug=1/.test(location.search))return;
   let b=document.getElementById('dbgbox');if(!b){b=document.createElement('pre');b.id='dbgbox';b.style.cssText='position:fixed;z-index:99;right:8px;bottom:8px;max-width:min(92vw,520px);max-height:50vh;overflow:auto;margin:0;padding:10px 12px;background:#111;color:#9f9;font:12px/1.5 monospace;border-radius:10px;white-space:pre-wrap;word-break:break-all';document.body.appendChild(b)}
   const imgs=[...document.querySelectorAll('.memrow .av')];
-  b.textContent='รุ่น 1012a | โหมดตรวจรูป\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
+  b.textContent='รุ่น 1012b | โหมดตรวจรูป | ชีตเก็บลำดับได้='+(SYNC.ordOk===undefined?'ยังไม่รู้':SYNC.ordOk?'ใช่':'ไม่ (Code.gs ยังเก่า)')+'\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
     return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n');
   let d=document.getElementById('dbgx');if(!d){d=document.createElement('div');d.id='dbgx';b.appendChild(d)}
   d.innerHTML='';
@@ -1684,7 +1686,7 @@ function render(){document.body.classList.toggle('wmode',!!S.widget);document.bo
 function renderSide(){
   const count=pid=>S.tasks.filter(t=>t.projectId===pid&&t.status!=='done').length;
   const mineN=S.whoami?S.tasks.filter(t=>t.createdBy===myName()&&t.status!=='done').length:0;
-  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1012a</small></span></div>
+  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1012b</small></span></div>
   <div class="navgrp">
     <button class="nav ${S.pid==='all'?'on':''}" data-act="pick" data-id="all"><span class="t">งานทั้งหมด</span><span class="n">${S.tasks.filter(t=>t.status!=='done').length}</span></button>
     ${S.whoami?`<button class="nav ${S.pid==='mine'?'on':''}" data-act="pick" data-id="mine"><span class="t">งานที่ฉันส่ง</span><span class="n">${mineN}</span></button>`:''}
@@ -1694,7 +1696,7 @@ function renderSide(){
   if(S.addingProject)h+=`<form data-form="proj"><input id="projname" placeholder="ชื่อโปรเจกต์ แล้วกด Enter" maxlength="60" autocomplete="off"></form>`;
   h+=`</div><div class="navgrp"><div class="navlbl">ทีม ${canWrite()?'<button data-act="newmem" aria-label="เพิ่มคนในทีม" title="เพิ่มคนในทีม">+</button>':''}</div>`;
   for(const m of S.team){const n=S.tasks.filter(t=>t.createdBy===m.name&&t.status!=='done').length;
-    h+=`<div class="memrow"><button class="nav ${S.pid==='who:'+m.id?'on':''}" data-act="pick" data-id="who:${esc(m.id)}">${avHtml(m.id)}<span class="t">${esc(m.name)}${m.id===S.whoami?' (คุณ)':''}</span><span class="n">${n}</span></button>${canWrite()?(S.confirmMem===m.id?`<button class="memx yes" data-act="delmem-yes" data-id="${esc(m.id)}">ลบ</button>`:`<button class="memx" data-act="setphoto" data-id="${esc(m.id)}" aria-label="ใส่รูปของ ${esc(m.name)}" title="ใส่รูป">รูป</button><button class="memx" data-act="delmem" data-id="${esc(m.id)}" aria-label="ลบ ${esc(m.name)} ออกจากทีม" title="ลบออกจากทีม">×</button>`):''}</div>`}
+    h+=`<div class="memrow"><div class="nav memname">${avHtml(m.id)}<span class="t">${esc(m.name)}${m.id===S.whoami?' (คุณ)':''}</span></div>${canWrite()?(S.confirmMem===m.id?`<button class="memx yes" data-act="delmem-yes" data-id="${esc(m.id)}">ลบ</button>`:`<button class="memx" data-act="setphoto" data-id="${esc(m.id)}" aria-label="ใส่รูปของ ${esc(m.name)}" title="ใส่รูป">รูป</button><button class="memx" data-act="delmem" data-id="${esc(m.id)}" aria-label="ลบ ${esc(m.name)} ออกจากทีม" title="ลบออกจากทีม">×</button>`):''}</div>`}
   if(!S.team.length)h+=`<p class="sidehint">เพิ่มชื่อคนในทีม แล้วมอบหมายงานให้แต่ละคนได้</p>`;
   if(S.addingMem)h+=`<form data-form="mem"><input id="memname" placeholder="ชื่อ แล้วกด Enter" maxlength="40" autocomplete="off"></form>`;
   h+=`</div>`;
@@ -1705,7 +1707,7 @@ function renderSide(){
   $('side').innerHTML=h;
   if(S.addingMem){const i=$('memname');i&&i.focus()}
   // mobile bar
-  let m=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"></div><button class="btn menubtn" data-act="menu" aria-label="เมนู ทีม ลิงก์แชร์ ซิงก์" title="เมนู"><span class="hb"><i></i><i></i><i></i></span></button><select id="mpick" aria-label="เลือกโปรเจกต์"><option value="all">งานทั้งหมด</option>${S.whoami?'<option value="mine">งานที่ฉันส่ง</option>':''}${S.projects.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}${S.team.map(m=>`<option value="who:${esc(m.id)}">งานที่ ${esc(m.name)} ส่ง</option>`).join('')}</select>${canWrite()?'<button class="btn mplus" data-act="newproj-m" aria-label="สร้างโปรเจกต์ใหม่" title="สร้างโปรเจกต์ใหม่">+</button>':''}`;
+  let m=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"></div><button class="btn menubtn" data-act="menu" aria-label="เมนู ทีม ลิงก์แชร์ ซิงก์" title="เมนู"><span class="hb"><i></i><i></i><i></i></span></button><select id="mpick" aria-label="เลือกโปรเจกต์"><option value="all">งานทั้งหมด</option>${S.whoami?'<option value="mine">งานที่ฉันส่ง</option>':''}${S.projects.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}</select>${canWrite()?'<button class="btn mplus" data-act="newproj-m" aria-label="สร้างโปรเจกต์ใหม่" title="สร้างโปรเจกต์ใหม่">+</button>':''}`;
   $('mbar').innerHTML=m;$('mpick').value=S.pid;
   if(S.addingProject){const i=$('projname');i&&i.focus()}
 }
@@ -1764,13 +1766,16 @@ function renderCanvas(){
 
 const ORDST=['design','prod'];
 const isOrd=s=>ORDST.includes(s);
-const ordv=t=>(t.ord===''||t.ord==null)?NaN:Number(t.ord);
+let ORDMAP={};try{ORDMAP=JSON.parse(localStorage.getItem('wn-ord')||'{}')}catch(e){}
+const ordSave=()=>{try{localStorage.setItem('wn-ord',JSON.stringify(ORDMAP))}catch(e){}};
+const ordv=t=>{let v=t.ord;if((v===''||v==null)&&SYNC.ordOk===false)v=ORDMAP[t.id];return (v===''||v==null)?NaN:Number(v)};
 function ordSort(list){const has=t=>isFinite(ordv(t));return [...list.filter(has).sort((x,y)=>ordv(x)-ordv(y)),...list.filter(t=>!has(t))]}
 function ordList(st){return ordSort(visible().filter(t=>t.status===st))}
-function ordApply(list,st,movedId){list.forEach((t,i)=>{const o=(i+1)*10;if(t.id===movedId)patchTask(t.id,{ord:o,status:st});else if(ordv(t)!==o)patchTask(t.id,{ord:o})})}
+function ordApply(list,st,movedId){list.forEach((t,i)=>{const o=(i+1)*10,need=ordv(t)!==o;if(SYNC.ordOk===false)ORDMAP[t.id]=o;if(t.id===movedId)patchTask(t.id,{ord:o,status:st});else if(need)patchTask(t.id,{ord:o})});
+  if(SYNC.ordOk===false){ordSave();if(!SYNC._ow){SYNC._ow=1;toast('ชีตยังไม่รองรับเก็บลำดับ (ต้องอัปเดต Code.gs ใน Apps Script) ตอนนี้ลำดับจำไว้เฉพาะเครื่องนี้ ทีมจะยังไม่เห็น')}}}
 function moveOrd(id,dir){const t=S.tasks.find(x=>x.id===id);if(!t||!canWrite())return;const list=ordList(t.status),i=list.findIndex(x=>x.id===id),j=i+dir;if(i<0||j<0||j>=list.length)return;[list[i],list[j]]=[list[j],list[i]];ordApply(list,t.status,null)}
 function dropOrd(id,st,beforeId){const list=ordList(st).filter(x=>x.id!==id),t=S.tasks.find(x=>x.id===id);if(!t)return;const k=beforeId?list.findIndex(x=>x.id===beforeId):-1;if(k<0)list.push(t);else list.splice(k,0,t);ordApply(list,st,id)}
-function ordReset(st){S.tasks.filter(t=>t.status===st&&isFinite(ordv(t))).forEach(t=>patchTask(t.id,{ord:null}));toast('กลับไปเรียงตามกำหนดส่งอัตโนมัติแล้ว')}
+function ordReset(st){S.tasks.filter(t=>t.status===st&&isFinite(ordv(t))).forEach(t=>{delete ORDMAP[t.id];patchTask(t.id,{ord:null})});ordSave();toast('กลับไปเรียงตามกำหนดส่งอัตโนมัติแล้ว')}
 function ordRow(t,i,n,st){if(!isOrd(st))return '';const w=canWrite();
   return `<span class="ordrow"><b class="ordn${i===0?' first':''}">${i+1}</b>${i===0?'<em>ทำก่อน</em>':''}<span class="sp"></span>${w?`<span class="ordbtn${i===0?' off':''}" role="button" data-act="ordup" data-id="${esc(t.id)}" aria-label="เลื่อนขึ้น" title="เลื่อนขึ้น">▲</span><span class="ordbtn${i===n-1?' off':''}" role="button" data-act="orddn" data-id="${esc(t.id)}" aria-label="เลื่อนลง" title="เลื่อนลง">▼</span>`:''}</span>`}
 function boardHtml(ts){
