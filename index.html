@@ -809,6 +809,18 @@ a.mcard:hover{border-color:var(--accent)}
   transform-origin:left;animation:draw .9s cubic-bezier(.65,0,.25,1) both}
 .side,.mbar{padding-top:calc(18px + 4px)}
 @media (max-width:1024px){.mbar{padding-top:16px}}
+html,body{overflow-x:hidden;max-width:100%}
+.panel{visibility:hidden;transition:transform .32s var(--ease),visibility 0s linear .32s}
+.panel.open{visibility:visible;transition:transform .32s var(--ease),visibility 0s}
+.subchip{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+.subchip.act{background:#dff5e8;color:#137a45;border-color:#b6e3c8}
+.subchip.wait{background:#fff1d6;color:#8a5d00;border-color:#f0d9a6}
+.ordrow{flex-wrap:wrap}
+.subseg{flex-wrap:wrap}
+.th .pdfdl{position:absolute;left:5px;bottom:5px;z-index:2;display:inline-grid;place-items:center;min-width:26px;height:24px;padding:0 7px;border-radius:8px;background:var(--surface);border:1px solid var(--line);color:var(--ink);font-size:11px;font-weight:600;text-decoration:none}
+.th .pdf{padding-bottom:30px}
+.pb>*{flex-shrink:0}
+.ptitle{min-height:76px}
 .memname{cursor:default}.memname:hover{background:transparent!important;transform:none}
 .ordrow{display:flex;align-items:center;gap:6px;margin:-2px 0}
 .ordrow .sp{flex:1}
@@ -979,6 +991,7 @@ async function addTask(title,status,extra={}){
 async function patchTask(id,patch){
   const t=S.tasks.find(x=>x.id===id);if(!t)return;
   const moved=patch.status&&patch.status!==t.status;
+  if(moved&&!('sub' in patch))patch.sub=null;
   if(moved&&patch.status==='done'&&!CALM)setTimeout(()=>pawBurst(id),80);
   if(moved)patch.completedAt=patch.status==='done'?Date.now():null;
   const after={...t,...patch};
@@ -1050,7 +1063,7 @@ function filesHtml(t){
   let h=`<div class="files"><div class="small">ไฟล์แนบ${fs.length?` (${fs.length})`:''}</div>`;
   if(fs.length||S.uploading){
     h+=`<div class="thumbs">${fs.map(f=>`<div class="th">${f.type==='application/pdf'
-      ?`<a class="pdf" href="${blobUrl(f.id)}" target="_blank" rel="noopener"><b>PDF</b><span>${esc(f.name)}</span></a>`
+      ?`<a class="pdf" href="https://drive.google.com/file/d/${encodeURIComponent(f.id)}/view" target="_blank" rel="noopener"><b>PDF</b><span>${esc(f.name)}</span></a><a class="pdfdl" href="https://drive.google.com/uc?export=download&id=${encodeURIComponent(f.id)}" target="_blank" rel="noopener" aria-label="ดาวน์โหลด ${esc(f.name)}" title="ดาวน์โหลด">โหลด</a>`
       :`<button class="img" data-act="view-img" data-id="${esc(f.id)}" aria-label="ดูรูป ${esc(f.name)}"><img src="${blobUrl(f.id)}" alt="${esc(f.name)}" loading="lazy"></button>`}
       ${edit?(S.confirmFile===f.id?`<button class="thx yes" data-act="rmfile-yes" data-id="${esc(f.id)}">ยืนยันลบ</button>`:`<button class="thx" data-act="rmfile" data-id="${esc(f.id)}" aria-label="ลบไฟล์ ${esc(f.name)}">×</button>`):''}</div>`).join('')}
       ${S.uploading?`<div class="th up">กำลังอัปโหลด ${S.uploading} ไฟล์…</div>`:''}</div>`;
@@ -1337,7 +1350,7 @@ addEventListener('resize',()=>{const w=innerWidth<=760;if(w!==_rw){_rw=w;if(S.vi
 /* ---------- Google Sheet sync ---------- */
 // Local state is the screen; every change is diffed against the last server copy (base) and sent to Apps Script.
 // The server answers with the whole sheet; changes made while a request was in flight are kept and sent next round.
-const TC=['id','title','status','priority','due','assignee','notes','files','projectId','createdAt','updatedAt','completedAt','createdBy','ord'];
+const TC=['id','title','status','priority','due','assignee','notes','files','projectId','createdAt','updatedAt','completedAt','createdBy','ord','sub'];
 const QC=['id','text','from','remindAt','done','doneAt','at'];
 const MC=['id','name','color','photo'];
 const SHOP={id:'shop',name:'งานโรงพิมพ์',color:'#e07a3f',createdAt:1};
@@ -1405,7 +1418,7 @@ function applyServer(res,sent){
   const sq=res.quick||[],sm=res.team||[];
   if(res.sheetUrl)SYNC.sheetUrl=res.sheetUrl;
   SYNC.months=res.months||[];
-  if(st.length)SYNC.ordOk=st.some(t=>'ord' in t);
+  if(st.length){SYNC.ordOk=st.some(t=>'ord' in t);SYNC.subOk=st.some(t=>'sub' in t)}
   const first=!SYNC.known;
   S.tasks=mergeArr(st,S.tasks,TC,sent&&sent.t);
   S.quick=mergeArr(sq,S.quick,QC,sent&&sent.q);
@@ -1499,7 +1512,7 @@ function dbgBox(){
   if(!/[?&]debug=1/.test(location.search))return;
   let b=document.getElementById('dbgbox');if(!b){b=document.createElement('pre');b.id='dbgbox';b.style.cssText='position:fixed;z-index:99;right:8px;bottom:8px;max-width:min(92vw,520px);max-height:50vh;overflow:auto;margin:0;padding:10px 12px;background:#111;color:#9f9;font:12px/1.5 monospace;border-radius:10px;white-space:pre-wrap;word-break:break-all';document.body.appendChild(b)}
   const imgs=[...document.querySelectorAll('.memrow .av')];
-  b.textContent='รุ่น 1012b | โหมดตรวจรูป | ชีตเก็บลำดับได้='+(SYNC.ordOk===undefined?'ยังไม่รู้':SYNC.ordOk?'ใช่':'ไม่ (Code.gs ยังเก่า)')+'\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
+  b.textContent='รุ่น 1015b | โหมดตรวจรูป | ชีตเก็บขั้นตอนย่อยได้='+(SYNC.subOk===undefined?'ยังไม่รู้':SYNC.subOk?'ใช่':'ไม่')+' | ชีตเก็บลำดับได้='+(SYNC.ordOk===undefined?'ยังไม่รู้':SYNC.ordOk?'ใช่':'ไม่ (Code.gs ยังเก่า)')+'\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
     return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n');
   let d=document.getElementById('dbgx');if(!d){d=document.createElement('div');d.id='dbgx';b.appendChild(d)}
   d.innerHTML='';
@@ -1686,7 +1699,7 @@ function render(){document.body.classList.toggle('wmode',!!S.widget);document.bo
 function renderSide(){
   const count=pid=>S.tasks.filter(t=>t.projectId===pid&&t.status!=='done').length;
   const mineN=S.whoami?S.tasks.filter(t=>t.createdBy===myName()&&t.status!=='done').length:0;
-  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1012b</small></span></div>
+  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1015b</small></span></div>
   <div class="navgrp">
     <button class="nav ${S.pid==='all'?'on':''}" data-act="pick" data-id="all"><span class="t">งานทั้งหมด</span><span class="n">${S.tasks.filter(t=>t.status!=='done').length}</span></button>
     ${S.whoami?`<button class="nav ${S.pid==='mine'?'on':''}" data-act="pick" data-id="mine"><span class="t">งานที่ฉันส่ง</span><span class="n">${mineN}</span></button>`:''}
@@ -1764,6 +1777,17 @@ function renderCanvas(){
   if(S.adding){const i=$('qadd');i&&i.focus()}
 }
 
+const SUBS={design:['กำลังทำ','ยังไม่ทำ'],prod:['กำลังตัด','รอปริ้น','รอตัด']};
+let SUBMAP={};try{SUBMAP=JSON.parse(localStorage.getItem('wn-sub')||'{}')}catch(e){}
+const subSave=()=>{try{localStorage.setItem('wn-sub',JSON.stringify(SUBMAP))}catch(e){}};
+const subOf=t=>{if(!SUBS[t.status])return '';const v=(t.sub!=null&&t.sub!=='')?t.sub:(SYNC.subOk===false?SUBMAP[t.id]:'');return v&&SUBS[t.status].includes(v)?v:''};
+const subCls=v=>v.startsWith('กำลัง')?'act':'wait';
+function subChip(t){const v=subOf(t);return v?`<span class="subchip ${subCls(v)}">${esc(v)}</span>`:''}
+function subRow(t,ro){if(!SUBS[t.status])return '';const cur=subOf(t);
+  return `<label>ขั้นตอนย่อย</label><div class="seg subseg" role="group" aria-label="ขั้นตอนย่อย">${SUBS[t.status].map(v=>`<button type="button" class="${cur===v?'on':''}" style="--sc:${subCls(v)==='act'?'#1f9d5a':'#d99a1d'}" data-act="setsub" data-id="${esc(v)}" aria-pressed="${cur===v}" title="${cur===v?'กดอีกครั้งเพื่อล้าง':''}" ${ro}>${esc(v)}</button>`).join('')}</div>`}
+function setSub(v){const t=S.tasks.find(x=>x.id===S.sel);if(!t||!canWrite())return;const nv=subOf(t)===v?null:v;
+  if(SYNC.subOk===false){if(nv)SUBMAP[t.id]=nv;else delete SUBMAP[t.id];subSave();if(!SYNC._ow){SYNC._ow=1;toast('ชีตยังไม่รองรับเก็บข้อมูลนี้ (ต้องอัปเดต Code.gs ใน Apps Script) ตอนนี้จำไว้เฉพาะเครื่องนี้ ทีมจะยังไม่เห็น')}}
+  patchTask(t.id,{sub:nv})}
 const ORDST=['design','prod'];
 const isOrd=s=>ORDST.includes(s);
 let ORDMAP={};try{ORDMAP=JSON.parse(localStorage.getItem('wn-ord')||'{}')}catch(e){}
@@ -1777,7 +1801,7 @@ function moveOrd(id,dir){const t=S.tasks.find(x=>x.id===id);if(!t||!canWrite())r
 function dropOrd(id,st,beforeId){const list=ordList(st).filter(x=>x.id!==id),t=S.tasks.find(x=>x.id===id);if(!t)return;const k=beforeId?list.findIndex(x=>x.id===beforeId):-1;if(k<0)list.push(t);else list.splice(k,0,t);ordApply(list,st,id)}
 function ordReset(st){S.tasks.filter(t=>t.status===st&&isFinite(ordv(t))).forEach(t=>{delete ORDMAP[t.id];patchTask(t.id,{ord:null})});ordSave();toast('กลับไปเรียงตามกำหนดส่งอัตโนมัติแล้ว')}
 function ordRow(t,i,n,st){if(!isOrd(st))return '';const w=canWrite();
-  return `<span class="ordrow"><b class="ordn${i===0?' first':''}">${i+1}</b>${i===0?'<em>ทำก่อน</em>':''}<span class="sp"></span>${w?`<span class="ordbtn${i===0?' off':''}" role="button" data-act="ordup" data-id="${esc(t.id)}" aria-label="เลื่อนขึ้น" title="เลื่อนขึ้น">▲</span><span class="ordbtn${i===n-1?' off':''}" role="button" data-act="orddn" data-id="${esc(t.id)}" aria-label="เลื่อนลง" title="เลื่อนลง">▼</span>`:''}</span>`}
+  return `<span class="ordrow"><b class="ordn${i===0?' first':''}">${i+1}</b>${i===0?'<em>ทำก่อน</em>':''}${subChip(t)}<span class="sp"></span>${w?`<span class="ordbtn${i===0?' off':''}" role="button" data-act="ordup" data-id="${esc(t.id)}" aria-label="เลื่อนขึ้น" title="เลื่อนขึ้น">▲</span><span class="ordbtn${i===n-1?' off':''}" role="button" data-act="orddn" data-id="${esc(t.id)}" aria-label="เลื่อนลง" title="เลื่อนลง">▼</span>`:''}</span>`}
 function boardHtml(ts){
   const showP=crossProj();
   return `<div class="board">${STATUSES.map(s=>{
@@ -2078,7 +2102,7 @@ async function newDraft(status){
   if(!canWrite())return;
   const id=await addTask('',status||'design');if(!id)return;
   S.draft=id;openPanel(id);
-  setTimeout(()=>{const f=$('f-title');if(f)f.focus()},80);
+  setTimeout(()=>{const f=$('f-title');if(f){f.focus({preventScroll:true});window.scrollTo(0,0);document.documentElement.scrollLeft=0}},360);
 }
 function closePanel(){
   const d=S.draft;S.draft=null;
@@ -2098,6 +2122,7 @@ function renderPanel(){
     <textarea class="ptitle" id="f-title" rows="2" maxlength="200" placeholder="พิมพ์ชื่องาน…" ${ro}>${esc(t.title)}</textarea>
     <div class="fields">
       <label>ขั้นตอน</label><div class="seg" role="group" aria-label="ขั้นตอนของงาน">${STATUSES.map(s=>`<button type="button" class="${t.status===s.id?'on':''}" style="--sc:${s.c}" data-act="setstatus" data-id="${s.id}" aria-pressed="${t.status===s.id}" ${ro}><i class="sdot"></i>${s.name}</button>`).join('')}</div>
+      ${subRow(t,ro)}
       <label>ส่งโดย</label><div class="asg">${t.createdBy?fromHtml(t):'<span class="small">-</span>'}</div>
       <label for="f-due">กำหนดส่ง</label><input type="date" id="f-due" value="${esc(t.due)}" ${ro}>
       <label for="f-pri">ความสำคัญ</label><select id="f-pri" ${ro}>${Object.entries(PRI).map(([k,v])=>`<option value="${k}" ${t.priority===k?'selected':''}>${v}</option>`).join('')}</select>
@@ -2151,6 +2176,7 @@ document.addEventListener('click',e=>{
   else if(a==='wsec'){S.wclosed=S.wclosed.includes(id)?S.wclosed.filter(x=>x!==id):[...S.wclosed,id];try{localStorage.setItem('wn-wclosed',JSON.stringify(S.wclosed))}catch(e){}renderCanvas()}
   else if(a==='wnext'){e.stopPropagation();const t=S.tasks.find(x=>x.id===id);const i=STATUSES.findIndex(x=>x.id===(t&&t.status));if(t&&canWrite()&&i>=0&&i<STATUSES.length-1)patchTask(id,{status:STATUSES[i+1].id});return}
   else if(a==='setphoto'){pickPhoto(id)}
+  else if(a==='setsub'){setSub(id)}
   else if(a==='ordup'){moveOrd(id,-1)}
   else if(a==='orddn'){moveOrd(id,1)}
   else if(a==='ordreset'){ordReset(id)}
