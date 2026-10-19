@@ -809,6 +809,30 @@ a.mcard:hover{border-color:var(--accent)}
   transform-origin:left;animation:draw .9s cubic-bezier(.65,0,.25,1) both}
 .side,.mbar{padding-top:calc(18px + 4px)}
 @media (max-width:1024px){.mbar{padding-top:16px}}
+@media (max-width:760px){
+  html.lite .cat,.catsit,.firecat,.fcat,.brandcat{display:none!important}
+  .mbar{padding:max(10px,env(safe-area-inset-top)) 12px 10px;gap:8px;z-index:30}
+  .mbar .logo{width:44px}
+  .mbar select{font-size:15px;padding:8px 10px}
+  .canvas{padding:0 0 calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
+  .top{padding:12px 14px 4px;gap:6px 10px;flex-wrap:nowrap;align-items:center}
+  .top h1{font-size:20px;margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top .greet,.top .paw,.top .sub,.top .motbtn{display:none!important}
+  .top .btn.pri{padding:8px 14px;min-height:38px;font-size:15px;flex:none}
+  .stats{display:none!important}
+  .canvas>.tabs,.tabs{padding:4px 14px 6px;gap:8px;border:0}
+  .tabs .sumbtn{padding:7px 12px;min-height:0;font-size:14px}
+  .tabs select{font-size:15px;padding:6px 8px}
+  .stg{position:sticky;top:0;z-index:20;margin:0!important;padding:8px 14px 10px;background:linear-gradient(#f3faf6 78%,rgba(243,250,246,0));gap:8px}
+  .stg button{padding:9px 14px;font-size:15px;min-height:40px}
+  .board{grid-auto-columns:100%!important;gap:0!important;padding:0!important;margin-top:0!important;scroll-padding:0!important;scroll-snap-type:x mandatory;scroll-snap-stop:always}
+  .col{padding:2px 14px 0!important;gap:10px;min-width:0}
+  .colh{display:none!important}
+  .card{padding:11px 13px!important;border-radius:16px}
+  .card .ptag,.card .cdesc{font-size:13px}
+  .col .addbtn{min-height:46px}
+  .ordbtns button,.ordrow button{min-width:36px;min-height:36px}
+}
 html,body{overflow-x:hidden;max-width:100%}
 .panel{visibility:hidden;transition:transform .32s var(--ease),visibility 0s linear .32s}
 .panel.open{visibility:visible;transition:transform .32s var(--ease),visibility 0s}
@@ -1419,7 +1443,7 @@ function applyServer(res,sent){
   if(res.sheetUrl)SYNC.sheetUrl=res.sheetUrl;
   SYNC.months=res.months||[];
   if(st.length){SYNC.ordOk=st.some(t=>'ord' in t);SYNC.subOk=st.some(t=>'sub' in t)}
-  const first=!SYNC.known;
+  const first=!SYNC.known;const _b=first?'':JSON.stringify([S.tasks,S.quick,S.team]);
   S.tasks=mergeArr(st,S.tasks,TC,sent&&sent.t);
   S.quick=mergeArr(sq,S.quick,QC,sent&&sent.q);
   if(!sent||teamStr(S.team)===sent.m)S.team=sm;
@@ -1435,7 +1459,9 @@ function applyServer(res,sent){
   if(!S.projects.some(p=>p.id==='shop'))S.projects.unshift({...SHOP});
   try{localStorage.setItem('ap-sheet-cache',JSON.stringify({tasks:S.tasks,team:S.team,projects:S.projects}))}catch(e){}
   try{localStorage.setItem('wn-quick',JSON.stringify(S.quick))}catch(e){}
-  if(typingNow()){S._dirty=true}else render();checkQuickDue();
+  const _chg=first||_b!==JSON.stringify([S.tasks,S.quick,S.team]);
+  if(_chg){if(typingNow()){S._dirty=true}else{window.__ks=1;try{render()}finally{window.__ks=0}}}
+  checkQuickDue();
 }
 function notifyTeam(msg){
   toast(msg);
@@ -1512,7 +1538,7 @@ function dbgBox(){
   if(!/[?&]debug=1/.test(location.search))return;
   let b=document.getElementById('dbgbox');if(!b){b=document.createElement('pre');b.id='dbgbox';b.style.cssText='position:fixed;z-index:99;right:8px;bottom:8px;max-width:min(92vw,520px);max-height:50vh;overflow:auto;margin:0;padding:10px 12px;background:#111;color:#9f9;font:12px/1.5 monospace;border-radius:10px;white-space:pre-wrap;word-break:break-all';document.body.appendChild(b)}
   const imgs=[...document.querySelectorAll('.memrow .av')];
-  b.textContent='รุ่น 1015b | โหมดตรวจรูป | ชีตเก็บขั้นตอนย่อยได้='+(SYNC.subOk===undefined?'ยังไม่รู้':SYNC.subOk?'ใช่':'ไม่')+' | ชีตเก็บลำดับได้='+(SYNC.ordOk===undefined?'ยังไม่รู้':SYNC.ordOk?'ใช่':'ไม่ (Code.gs ยังเก่า)')+'\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
+  b.textContent='รุ่น 1016b | โหมดตรวจรูป | ชีตเก็บขั้นตอนย่อยได้='+(SYNC.subOk===undefined?'ยังไม่รู้':SYNC.subOk?'ใช่':'ไม่')+' | ชีตเก็บลำดับได้='+(SYNC.ordOk===undefined?'ยังไม่รู้':SYNC.ordOk?'ใช่':'ไม่ (Code.gs ยังเก่า)')+'\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
     return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n');
   let d=document.getElementById('dbgx');if(!d){d=document.createElement('div');d.id='dbgx';b.appendChild(d)}
   d.innerHTML='';
@@ -1691,7 +1717,14 @@ function keepInputs(fn){return function(){
   for(const id in saved){const el=document.getElementById(id);if(el&&!el.value)el.value=saved[id]}
   if(fid&&KEEP_IDS.includes(fid)){const el=document.getElementById(fid);if(el&&document.activeElement!==el){el.focus();try{el.setSelectionRange(ss,se)}catch(e){}}}
   return r}}
-render=keepInputs(render);renderCanvas=keepInputs(renderCanvas);renderSide=keepInputs(renderSide);
+const keepScroll=fn=>function(){
+  if(!window.__ks)return fn.apply(this,arguments);
+  const c=document.querySelector('.canvas'),b=document.querySelector('.board'),sy=window.scrollY,ct=c?c.scrollTop:0,bl=b?b.scrollLeft:0;
+  const r=fn.apply(this,arguments);
+  const c2=document.querySelector('.canvas'),b2=document.querySelector('.board');
+  if(c2)c2.scrollTop=ct;if(b2)b2.scrollLeft=bl;window.scrollTo(0,sy);
+  return r};
+render=keepInputs(render);render=keepScroll(render);renderCanvas=keepInputs(renderCanvas);renderSide=keepInputs(renderSide);
 document.addEventListener('focusout',()=>setTimeout(()=>{if(S._dirty&&!typingNow()){S._dirty=false;render()}},120));
 /* ---------- render ---------- */
 function render(){document.body.classList.toggle('wmode',!!S.widget);document.body.classList.toggle('dw',DW);document.body.classList.toggle('dwsolid',DW&&DWSOLID);document.body.classList.toggle('omode',OVL&&!S.desk);document.body.classList.toggle('odesk',OVL&&!!S.desk);document.body.classList.toggle('osolid',OVL&&OSOLID);renderSide();renderTop();renderCanvas();hydrateAvatars();if(S.sel)refreshPanelIfIdle();afterRender()}
@@ -1699,7 +1732,7 @@ function render(){document.body.classList.toggle('wmode',!!S.widget);document.bo
 function renderSide(){
   const count=pid=>S.tasks.filter(t=>t.projectId===pid&&t.status!=='done').length;
   const mineN=S.whoami?S.tasks.filter(t=>t.createdBy===myName()&&t.status!=='done').length:0;
-  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1015b</small></span></div>
+  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1016b</small></span></div>
   <div class="navgrp">
     <button class="nav ${S.pid==='all'?'on':''}" data-act="pick" data-id="all"><span class="t">งานทั้งหมด</span><span class="n">${S.tasks.filter(t=>t.status!=='done').length}</span></button>
     ${S.whoami?`<button class="nav ${S.pid==='mine'?'on':''}" data-act="pick" data-id="mine"><span class="t">งานที่ฉันส่ง</span><span class="n">${mineN}</span></button>`:''}
@@ -1805,13 +1838,14 @@ function ordRow(t,i,n,st){if(!isOrd(st))return '';const w=canWrite();
 function boardHtml(ts){
   const showP=crossProj();
   return `<div class="board">${STATUSES.map(s=>{
-    let list=ts.filter(t=>t.status===s.id);if(isOrd(s.id))list=ordSort(list);
+    let list=ts.filter(t=>t.status===s.id);if(isOrd(s.id))list=ordSort(list);if(s.id==='done')list=list.slice().sort((a,b)=>(doneTs(b)||0)-(doneTs(a)||0));const lim=(s.id==='done'&&!S.doneAll)?6:1e9;
     return `<div class="col" data-drop="${s.id}" style="--sc:${s.c};--d:${STATUSES.indexOf(s)*70}ms"><div class="colh"><i class="sdot"></i>${s.name} <span class="n">${list.length}</span>${s.id==='done'?CAT_SIT:''}${isOrd(s.id)&&canWrite()&&list.some(t=>isFinite(ordv(t)))?`<span class="ordreset" role="button" data-act="ordreset" data-id="${s.id}" title="ล้างลำดับที่จัดเอง แล้วเรียงตามกำหนดส่ง">เรียงอัตโนมัติ</span>`:''}</div>${list.length?'':`<div class="nap">${CAT_NAP}<span class="zz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></span><small>${s.id==='done'?'ยังไม่มีงานเสร็จ แมวรออยู่':'ว่างแล้ว แมวขอนอนก่อน'}</small></div>`}
-    ${list.map((t,i)=>`<button style="--i:${i}" class="card ${fxClass(t)} ${t.status==='done'?'done':''} ${t.id===S.flash?'arrive':''}" draggable="${canWrite()}" data-act="open" data-id="${esc(t.id)}">
+    ${list.slice(0,lim).map((t,i)=>`<button style="--i:${i}" class="card ${fxClass(t)} ${t.status==='done'?'done':''} ${t.id===S.flash?'arrive':''}" draggable="${canWrite()}" data-act="open" data-id="${esc(t.id)}">
       ${ordRow(t,i,list.length,s.id)}${fxDeco(t)}${coverHtml(t)}<span class="tt">${esc(t.title||'งานใหม่ (กำลังกรอก)')}</span><span class="sprog" aria-hidden="true">${STATUSES.map((x,k)=>`<i class="${k<=STATUSES.findIndex(z=>z.id===t.status)?'on':''}"></i>`).join('')}<em>${esc((STATUSES.find(z=>z.id===t.status)||{}).name||'')}</em></span>
       ${showP?`<span class="meta">${pchip(t.projectId)}</span>`:''}
       <span class="meta">${priHtml(t.priority)}${dueHtml(t.due,t.status)}${fcHtml(t)}<span class="r">${fromHtml(t)}</span></span>
     </button>`).join('')}
+    ${s.id==='done'&&list.length>6?`<button class="addbtn moredone" data-act="doneall">${S.doneAll?'ย่อ แสดงแค่ 6 งานล่าสุด':`ดูงานที่เสร็จทั้งหมด (${list.length})`}</button>`:''}
     ${canWrite()?(S.adding===s.id?`<form data-form="task" data-status="${s.id}"><input class="qadd" id="qadd" placeholder="ชื่องาน แล้วกด Enter" maxlength="200" autocomplete="off"></form>`:`<button class="addbtn" data-act="add" data-id="${s.id}">+ เพิ่มงาน</button>`):''}
     </div>`}).join('')}</div>`;
 }
@@ -1952,7 +1986,7 @@ const fromHtml=t=>{if(!t.createdBy)return'';const m=S.team.find(x=>x.name===t.cr
 const myName=()=>(member(S.whoami)||{}).name||'';
 const QV=()=>TEAM?S.quick.filter(q=>q.from&&q.from===myName()):S.quick;
 try{S.quick=JSON.parse(localStorage.getItem('wn-quick')||'[]')}catch(e){}
-try{S.qOpen=localStorage.getItem('wn-qopen')!=='0'}catch(e){}
+try{{const v=localStorage.getItem('wn-qopen');S.qOpen=v===null?!matchMedia('(max-width:760px)').matches:v!=='0'}}catch(e){}
 const QPRESETS=window.AP_TEAM?[{k:'now',l:'ตอนนี้'},{k:1,l:'อีก 1 นาที'},{k:15,l:'อีก 15 นาที'},{k:60,l:'อีก 1 ชม.'}]:[{k:0,l:'ไม่ตั้งเวลา'},{k:'now',l:'ตอนนี้'},{k:1,l:'1 นาที'},{k:15,l:'15 นาที'},{k:30,l:'30 นาที'},{k:60,l:'1 ชม.'},{k:120,l:'2 ชม.'},{k:'17',l:'ก่อน 17:00'}];
 function presetTime(k){
   if(!k)return null;
@@ -2153,6 +2187,7 @@ document.addEventListener('click',e=>{
   else if(a==='newproj'){S.addingProject=true;renderSide()}
   else if(a==='newproj-m')mobileProjPrompt();
   else if(a==='setstatus'){if(canWrite())patchTask(S.sel,{status:id}).then(()=>{if(S.sel)renderPanel()})}
+  else if(a==='doneall'){S.doneAll=!S.doneAll;renderCanvas()}
   else if(a==='qtoggle'){S.qOpen=!S.qOpen;try{localStorage.setItem('wn-qopen',S.qOpen?'1':'0')}catch(e){}const q=$('quick');if(q){q.classList.toggle('closed',!S.qOpen);el.setAttribute('aria-expanded',S.qOpen)}}
   else if(a==='qpreset'){S.qPreset=(id==='17'||id==='now')?id:+id;document.querySelectorAll('.qtimes button').forEach(b=>b.classList.toggle('on',b.dataset.id===id));const i=$('qin');i&&i.focus()}
   else if(a==='qtick'){const was=(S.quick.find(q=>q.id===id)||{}).done;saveQuick(S.quick.map(q=>q.id===id?{...q,done:!q.done,doneAt:q.done?null:Date.now()}:q));if(!was)burst()}
