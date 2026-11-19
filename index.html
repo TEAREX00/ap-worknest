@@ -145,6 +145,9 @@ button{cursor:pointer}
 .cover{width:100%;max-height:150px;object-fit:cover;border-radius:6px;display:block;background:var(--sunk)}
 .fc{font-size:11.5px;color:var(--muted);white-space:nowrap;font-weight:400;text-decoration:none;display:inline-block}
 .files{display:flex;flex-direction:column;gap:8px}
+.filehead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dlall{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;font:600 12px inherit;font-family:inherit;cursor:pointer}
+.dlall:hover{background:var(--sunk)}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
 .th{position:relative;aspect-ratio:1;max-width:100%;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--sunk)}
 .th .img{border:0;padding:0;background:none;display:block;width:100%;height:100%;cursor:zoom-in}
@@ -817,6 +820,7 @@ html.bk.bkimg body.th-glass .app,html.bk.bkimg.lite body.th-glass .app{backgroun
 html.bk body.th-glass .side,html.bk.lite body.th-glass .side{background:#141417!important;border-right:1px solid rgba(255,255,255,.08)}
 html.bk.bkimg body.th-glass .side,html.bk.bkimg.lite body.th-glass .side{background:rgba(12,12,14,.55)!important}
 @media (max-width:1024px){html.bk.bkimg body.th-glass .side,html.bk.bkimg.lite body.th-glass .side{background:#141417!important}}
+html.bk body.th-glass .brand .logo{background:linear-gradient(140deg,#4b4b55,#26262c)!important;box-shadow:0 8px 20px rgba(0,0,0,.5)!important}
 html.bk body.th-glass .brand{background:linear-gradient(135deg,#3a3a42,#1c1c21)!important;box-shadow:0 10px 26px rgba(0,0,0,.5)!important}
 html.bk body.th-glass .btn{background:rgba(255,255,255,.08);color:var(--ink);border-color:rgba(255,255,255,.14)}
 html.bk body.th-glass .btn.pri{background:#f2f2f4!important;color:#111;border-color:transparent;box-shadow:none!important}
@@ -855,7 +859,11 @@ html.bk body.th-glass .quick,html.bk.lite body.th-glass .quick{background:rgba(2
 html.bk body.th-glass .quick::before{display:none!important}
 html.bk .quick input{background:rgba(0,0,0,.35)!important;color:var(--ink)}html.bk .quick input::placeholder{color:#a9a9b3}
 html.bk .quick small,html.bk .quick .hint{color:var(--muted)}
-html.bk .fzk{--x:0}html.bk .fzk div{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
+html.bk .fzk{--x:0}
+html.bk .fzkp{background:rgba(120,224,166,.16);color:#8fe8b6}
+html.bk .fzk.nc div b{color:#fff!important}html.bk .fzk.nc div span{background:#2a2a30!important}
+html.bk .fzstkq b{color:#f2f2f4}html.bk .fzknote{background:rgba(255,255,255,.07)}
+html.bk .fzundo.sure{background:rgba(255,120,120,.15)}html.bk .fzk div{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
 html.bk .fzk div:nth-child(2) span{background:#2e7d52}html.bk .fzk div:nth-child(3) span{background:#c2413b}
 html.bk .fzk b{color:#fff}html.bk .fzk div:nth-child(2) b{color:#7be0a6}html.bk .fzk div:nth-child(3) b{color:#ff8a85}
 html.bk .fzt td{border-color:rgba(255,255,255,.1)}html.bk .fzt td.f{color:#ff8a85}
@@ -916,6 +924,27 @@ html.lite .th-glass .scard.hero,html body.th-glass .scard.hero{background:linear
 .fzrd{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:12px 0}
 .fzrd label{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--muted)}
 .fzrd input{font:600 15px var(--f-body);padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--card,#fff);color:var(--ink)}
+.fzkp{background:#e4f4ea;color:#17703f;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600}
+.fzkp.big{font-size:13px;padding:4px 12px}
+.fzchips{display:flex;gap:8px;flex-wrap:wrap}
+.fzstk{padding:0!important;overflow:hidden;margin-bottom:10px}
+.fzstkh{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;align-items:center;padding:12px 16px}
+.fzstkm{min-width:0}
+.fzknote{margin-top:4px;font-size:13px;color:var(--ink);background:var(--sunk);border-radius:8px;padding:5px 10px;display:inline-block;max-width:100%;overflow-wrap:anywhere}
+.fzstkq{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.fzstkq b{font:700 26px var(--f-display);color:var(--accent,#1f9d5a)}.fzstkq b.z{color:var(--muted)}
+.fzstkq small{color:var(--muted);font-size:12px}
+.fzstkq .btn{margin-top:4px}
+.fzuses{border-top:1px solid var(--line);padding:6px 16px 8px;display:flex;flex-direction:column;gap:2px;font-size:12.5px;color:var(--muted)}
+.fzuses>div{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.fzundo{border:0;background:none;color:#c2413b;font:600 12px inherit;font-family:inherit;cursor:pointer;padding:4px 6px}
+.fzundo.sure{background:#fde8e8;border-radius:8px}
+.fzkeep{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;align-items:center}
+@media (max-width:560px){.fzkeep{grid-template-columns:1fr}}
+.fzhint{display:block;margin-top:6px;color:var(--muted);font-size:12px}
+.fzuinfo{margin:0 0 12px;font-size:14px;color:var(--muted);line-height:1.6}.fzuinfo b{color:var(--ink)}
+.fzk small{display:block;padding:0 4px 8px;font-size:12px;color:var(--muted)}
+.fzk.nc div span{background:var(--fzh)!important}.fzk.nc div b{color:var(--fzh)!important}
 .fzk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
 .fzk div{background:var(--card,#fff);border:1px solid var(--line);border-radius:12px;overflow:hidden;text-align:center}
 .fzk span{display:block;padding:7px 4px;color:#fff;font-size:13px;font-weight:600;background:var(--fzh)}
@@ -1541,9 +1570,14 @@ async function removeFile(fid){
   await patchTask(t.id,{files:(t.files||[]).filter(f=>f.id!==fid)});
   dropAssets([{id:fid}]);renderPanel();
 }
+function dlAll(){
+  const t=S.tasks.find(x=>x.id===S.sel),fs=(t&&t.files)||[];if(!fs.length)return;
+  toast('กำลังโหลด '+fs.length+' ไฟล์… ถ้าเบราว์เซอร์ถาม ให้กดอนุญาตดาวน์โหลดหลายไฟล์');
+  fs.forEach((f,i)=>setTimeout(()=>{const fr=document.createElement('iframe');fr.style.display='none';fr.src='https://drive.google.com/uc?export=download&id='+encodeURIComponent(f.id);document.body.appendChild(fr);setTimeout(()=>fr.remove(),120000)},i*800));
+}
 function filesHtml(t){
   const fs=t.files||[],edit=AS&&canWrite();
-  let h=`<div class="files"><div class="small">ไฟล์แนบ${fs.length?` (${fs.length})`:''}</div>`;
+  let h=`<div class="files"><div class="small filehead"><span>ไฟล์แนบ${fs.length?` (${fs.length})`:''}</span>${fs.length?`<button type="button" class="dlall" data-act="dl-all">⬇ โหลดทั้งหมด</button>`:''}</div>`;
   if(fs.length||S.uploading){
     h+=`<div class="thumbs">${fs.map(f=>`<div class="th">${f.type==='application/pdf'
       ?`<a class="pdf" href="https://drive.google.com/file/d/${encodeURIComponent(f.id)}/view" target="_blank" rel="noopener"><b>PDF</b><span>${esc(f.name)}</span></a><a class="pdfdl" href="https://drive.google.com/uc?export=download&id=${encodeURIComponent(f.id)}" target="_blank" rel="noopener" aria-label="ดาวน์โหลด ${esc(f.name)}" title="ดาวน์โหลด">โหลด</a>`
@@ -2014,7 +2048,7 @@ function dbgBox(){
   if(!/[?&]debug=1/.test(location.search))return;
   let b=document.getElementById('dbgbox');if(!b){b=document.createElement('pre');b.id='dbgbox';b.style.cssText='position:fixed;z-index:99;right:8px;bottom:8px;max-width:min(92vw,520px);max-height:50vh;overflow:auto;margin:0;padding:10px 12px;background:#111;color:#9f9;font:12px/1.5 monospace;border-radius:10px;white-space:pre-wrap;word-break:break-all';document.body.appendChild(b)}
   const imgs=[...document.querySelectorAll('.memrow .av')];
-  b.textContent='รุ่น 1103r | โหมดตรวจรูป | ชีตเก็บขั้นตอนย่อยได้='+(SYNC.subOk===undefined?'ยังไม่รู้':SYNC.subOk?'ใช่':'ไม่')+' | ชีตเก็บลำดับได้='+(SYNC.ordOk===undefined?'ยังไม่รู้':SYNC.ordOk?'ใช่':'ไม่ (Code.gs ยังเก่า)')+'\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
+  b.textContent='รุ่น 1103u | โหมดตรวจรูป | ชีตเก็บขั้นตอนย่อยได้='+(SYNC.subOk===undefined?'ยังไม่รู้':SYNC.subOk?'ใช่':'ไม่')+' | ชีตเก็บลำดับได้='+(SYNC.ordOk===undefined?'ยังไม่รู้':SYNC.ordOk?'ใช่':'ไม่ (Code.gs ยังเก่า)')+'\n'+S.team.map((m,i)=>{const p=m.photo||'',a=imgs[i],im=a&&a.querySelector('img');
     return m.name+': photo='+(p?p.slice(0,28)+'… ('+p.length+' ตัวอักษร)':'ว่าง')+' | วงกลม='+(a?a.className:'-')+(im?' | รูปโหลด='+im.complete+' กว้าง='+im.naturalWidth:'')}).join('\n');
   let d=document.getElementById('dbgx');if(!d){d=document.createElement('div');d.id='dbgx';b.appendChild(d)}
   d.innerHTML='';
@@ -2208,7 +2242,7 @@ function render(){document.body.classList.toggle('wmode',!!S.widget);document.bo
 function renderSide(){
   const count=pid=>S.tasks.filter(t=>t.projectId===pid&&t.status!=='done').length;
   const mineN=S.whoami?S.tasks.filter(t=>t.createdBy===myName()&&t.status!=='done').length:0;
-  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1103r</small></span></div>
+  let h=`<div class="brand"><img class="logo" src="${LOGO}" alt="Allied Press"><span class="btx"><b>Worknest</b><small>อัลลายด์เพรส หาดใหญ่ · รุ่น 1103u</small></span></div>
   <div class="navgrp">
     <button class="nav ${S.pid==='all'?'on':''}" data-act="pick" data-id="all"><span class="t">งานทั้งหมด</span><span class="n">${S.tasks.filter(t=>t.status!=='done').length}</span></button>
     ${S.whoami?`<button class="nav ${S.pid==='mine'?'on':''}" data-act="pick" data-id="mine"><span class="t">งานที่ฉันส่ง</span><span class="n">${mineN}</span></button>`:''}
@@ -2436,12 +2470,17 @@ const FZNOTES=['Jam','สี','สีเพี้ยน','ซ่อม','ขา�
 const FZNM={};FZNOTES.forEach(n=>FZNM[n.toLowerCase()]=n);FZNM['สีเพื้ยน']='สีเพี้ยน';FZNM['mark ไม่ตรง']='Mark หน้า-หลังไม่ตรง';
 const FZTH=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],FZWD=['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
 const fzEntryDate=()=>FZ.edate||TODAY();
-const FZ={edate:null,rows:null,lists:null,loading:false,v:'log',per:null,q:'',cat:'',shown:100,dirty:true,dlg:null,lastDate:'',lastLoad:0};
+const FZ={edate:null,uses:null,sf:'ready',sq:'',rows:null,lists:null,loading:false,v:'log',per:null,q:'',cat:'',shown:100,dirty:true,dlg:null,lastDate:'',lastLoad:0};
 let FZQ=[];try{FZQ=JSON.parse(localStorage.getItem('wn-fuji-q')||'[]')}catch(e){FZQ=[]}
 const fzOnline=()=>!!(window.AP_TEAM||SYNC.url);
 const fzN=v=>{const n=Number(v);return isFinite(n)?n:0};
+const FZSETDEF='PP 140g';
+const fzSetNorm=s=>String(s||'').trim().replace(/(\d)\s+g\b/gi,'$1g');
 const fzNote=n=>{n=String(n||'').trim();return n?(FZNM[n.toLowerCase()]||n):''};
-const fzNorm=r=>({id:String(r.id),date:String(r.date||'').slice(0,10),jid:(r.jid===''||r.jid==null||!fzN(r.jid))?'':fzN(r.jid),name:String(r.name||''),mat:String(r.mat||''),ok:fzN(r.ok),fail:fzN(r.fail),set:String(r.set||''),cust:String(r.cust||''),note:fzNote(r.note),by:String(r.by||'')});
+const fzNorm=r=>({id:String(r.id),date:String(r.date||'').slice(0,10),jid:(r.jid===''||r.jid==null||!fzN(r.jid))?'':fzN(r.jid),name:String(r.name||''),mat:String(r.mat||''),ok:fzN(r.ok),fail:fzN(r.fail),set:fzSetNorm(r.set),cust:String(r.cust||''),note:fzNote(r.note),by:String(r.by||''),keep:Math.min(fzN(r.keep),fzN(r.fail)),knote:String(r.knote||'')});
+const fzNormU=u=>({id:String(u.id),rid:String(u.rid||''),date:String(u.date||'').slice(0,10),qty:fzN(u.qty),cust:String(u.cust||''),note:String(u.note||''),by:String(u.by||'')});
+const fzUsed=rid=>(FZ.uses||[]).filter(u=>u.rid===rid).reduce((a,u)=>a+u.qty,0);
+const fzLots=()=>(FZ.rows||[]).filter(r=>r.keep>0).map(r=>{const used=fzUsed(r.id);return{r,used,left:Math.max(0,r.keep-used)}}).sort((a,b)=>a.r.date<b.r.date?1:a.r.date>b.r.date?-1:0);
 const fzDefLists=()=>Object.keys(FZCAT).map(m=>({id:'dm'+m,type:'mat',name:m,cat:FZCAT[m]}));
 const fzLists=()=>FZ.lists||(FZ.lists=fzDefLists());
 const fzList=t=>(FZ.lists||fzDefLists()).filter(x=>x.type===t);
@@ -2462,7 +2501,7 @@ function fzPer(){if(!FZ.per)FZ.per={t:'month',k:TODAY().slice(0,7)};return FZ.pe
 const fzIn=r=>{const p=fzPer();return p.t==='all'||(p.t==='month'&&r.date.startsWith(p.k))||(p.t==='range'&&r.date>=p.f&&r.date<=p.to)};
 const fzRows=()=>(FZ.rows||[]).filter(fzIn);
 function fzMonths(){const s=new Set((FZ.rows||[]).map(r=>r.date.slice(0,7)).filter(Boolean));s.add(TODAY().slice(0,7));return [...s].sort().reverse()}
-function fzStats(list){const o={jobs:list.length,ok:0,fail:0,days:new Set()};list.forEach(r=>{o.ok+=r.ok;o.fail+=r.fail;o.days.add(r.date)});o.total=o.ok+o.fail;o.nd=o.days.size;o.avg=o.nd?o.total/o.nd:0;return o}
+function fzStats(list){const o={jobs:list.length,ok:0,fail:0,keep:0,days:new Set()};list.forEach(r=>{o.ok+=r.ok;o.fail+=r.fail;o.keep+=r.keep||0;o.days.add(r.date)});o.total=o.ok+o.fail;o.nd=o.days.size;o.avg=o.nd?o.total/o.nd:0;return o}
 function fzGroup(list,kf){const m=new Map();list.forEach(r=>{const k=kf(r);let g=m.get(k);if(!g){g={k,n:0,total:0,fail:0};m.set(k,g)}g.n++;g.total+=fzTot(r);g.fail+=r.fail});return[...m.values()]}
 function fzBounds(){
   const p=fzPer();if(p.t==='range')return[p.f,p.to];
@@ -2470,12 +2509,12 @@ function fzBounds(){
   const ds=(FZ.rows||[]).map(r=>r.date).filter(Boolean).sort();return[ds[0]||TODAY(),ds[ds.length-1]||TODAY()];
 }
 function fzPerName(){const p=fzPer();if(p.t==='all')return 'ทุกเดือน';if(p.t==='range')return fzDL(p.f)+' – '+fzDL(p.to);return fzML(p.k)}
-function fzSave(){try{localStorage.setItem(fzOnline()?'wn-fuji-cache':'wn-fuji',JSON.stringify(FZ.rows||[]));localStorage.setItem(fzOnline()?'wn-fuji-lists-c':'wn-fuji-lists',JSON.stringify(FZ.lists))}catch(e){}}
+function fzSave(){try{localStorage.setItem(fzOnline()?'wn-fuji-cache':'wn-fuji',JSON.stringify(FZ.rows||[]));localStorage.setItem(fzOnline()?'wn-fuji-lists-c':'wn-fuji-lists',JSON.stringify(FZ.lists));localStorage.setItem(fzOnline()?'wn-fuji-uses-c':'wn-fuji-uses',JSON.stringify(FZ.uses||[]))}catch(e){}}
 function fzDirty(){FZ.dirty=true;if(S.view==='fuji')renderCanvas()}
 /* data: load from the sheet (or this device when no sheet is connected), push edits through a small retry queue */
 async function fzLoad(force){
   if(FZ.loading)return;
-  if(FZ.rows===null){try{FZ.rows=JSON.parse(localStorage.getItem(fzOnline()?'wn-fuji-cache':'wn-fuji')||'[]').map(fzNorm)}catch(e){FZ.rows=[]};try{FZ.lists=JSON.parse(localStorage.getItem(fzOnline()?'wn-fuji-lists-c':'wn-fuji-lists')||'null')}catch(e){FZ.lists=null};FZ.dirty=true}
+  if(FZ.rows===null){try{FZ.rows=JSON.parse(localStorage.getItem(fzOnline()?'wn-fuji-cache':'wn-fuji')||'[]').map(fzNorm)}catch(e){FZ.rows=[]};try{FZ.lists=JSON.parse(localStorage.getItem(fzOnline()?'wn-fuji-lists-c':'wn-fuji-lists')||'null')}catch(e){FZ.lists=null};try{FZ.uses=JSON.parse(localStorage.getItem(fzOnline()?'wn-fuji-uses-c':'wn-fuji-uses')||'[]').map(fzNormU)}catch(e){FZ.uses=[]};FZ.dirty=true}
   if(!fzOnline()){FZ.lastLoad=Date.now();if(S.view==='fuji')fzDirty();return}
   if(!force&&Date.now()-FZ.lastLoad<20000){return}
   FZ.loading=true;
@@ -2488,23 +2527,25 @@ async function fzLoad(force){
     if(Array.isArray(j.lists)){let L=j.lists.map(x=>({id:String(x.id),type:x.type,name:String(x.name||''),cat:String(x.cat||'')}));
       if(FZQ.length){const m=new Map(L.map(x=>[x.id,x]));FZQ.forEach(q=>{(q.l||[]).forEach(x=>m.set(x.id,x));(q.dl||[]).forEach(id=>m.delete(id))});L=[...m.values()]}
       FZ.lists=L}
+    if(Array.isArray(j.uses)){let U=j.uses.map(fzNormU);if(FZQ.length){const m=new Map(U.map(x=>[x.id,x]));FZQ.forEach(q=>{(q.us||[]).forEach(x=>m.set(x.id,x));(q.du||[]).forEach(id=>m.delete(id))});U=[...m.values()]}FZ.uses=U;FZ.noUses=false}else{FZ.noUses=true;if(!FZ.uses)FZ.uses=[]}
+    FZ.diag='โหลดสำเร็จ '+rows.length+' แถว (คำตอบ: '+Object.keys(j).join(',')+')';
     FZ.rows=rows;FZ.lastLoad=Date.now();FZ.err='';fzSave();
     if(!FZ.autoPer){FZ.autoPer=1;const p=fzPer();if(p.t==='month'&&rows.length&&!rows.some(r=>r.date.startsWith(p.k))){const ks=rows.map(r=>r.date.slice(0,7)).filter(Boolean).sort();FZ.per={t:'month',k:ks[ks.length-1]}}}
-  }catch(e){FZ.err=String((e&&e.message)||e||'error');if(S.view==='fuji')toast('โหลดข้อมูลผลิต Fuji ไม่ได้ ลองกดรีเฟรชอีกครั้ง')}
+  }catch(e){FZ.err=String((e&&e.message)||e||'error');FZ.diag='ผิดพลาด: '+FZ.err;if(S.view==='fuji')toast('โหลดข้อมูลผลิต Fuji ไม่ได้ ลองกดรีเฟรชอีกครั้ง')}
   FZ.loading=false;if(S.view==='fuji')fzDirty();
 }
-function fzQueue(u,d,l,dl){
+function fzQueue(u,d,l,dl,us,du){
   if(!fzOnline()){fzSave();return}
-  FZQ.push({u:u||[],d:d||[],l:l||[],dl:dl||[]});try{localStorage.setItem('wn-fuji-q',JSON.stringify(FZQ))}catch(e){}
+  FZQ.push({u:u||[],d:d||[],l:l||[],dl:dl||[],us:us||[],du:du||[]});try{localStorage.setItem('wn-fuji-q',JSON.stringify(FZQ))}catch(e){}
   fzSave();fzFlush();
 }
 let fzBusy=false;
 async function fzFlush(){
   if(!fzOnline()||fzBusy||!FZQ.length)return;
   fzBusy=true;
-  const n=FZQ.length,up=new Map(),del=new Set(),ul=new Map(),dl=new Set();
-  FZQ.slice(0,n).forEach(q=>{(q.u||[]).forEach(r=>{up.set(r.id,r);del.delete(r.id)});(q.d||[]).forEach(id=>{del.add(id);up.delete(id)});(q.l||[]).forEach(x=>{ul.set(x.id,x);dl.delete(x.id)});(q.dl||[]).forEach(id=>{dl.add(id);ul.delete(id)})});
-  try{await gsCall({action:'fujiSave',fuji:[...up.values()],deleteFuji:[...del],lists:[...ul.values()],deleteLists:[...dl]});FZQ.splice(0,n);try{localStorage.setItem('wn-fuji-q',JSON.stringify(FZQ))}catch(e){}}
+  const n=FZQ.length,up=new Map(),del=new Set(),ul=new Map(),dl=new Set(),uu=new Map(),du=new Set();
+  FZQ.slice(0,n).forEach(q=>{(q.u||[]).forEach(r=>{up.set(r.id,r);del.delete(r.id)});(q.d||[]).forEach(id=>{del.add(id);up.delete(id)});(q.l||[]).forEach(x=>{ul.set(x.id,x);dl.delete(x.id)});(q.dl||[]).forEach(id=>{dl.add(id);ul.delete(id)});(q.us||[]).forEach(x=>{uu.set(x.id,x);du.delete(x.id)});(q.du||[]).forEach(id=>{du.add(id);uu.delete(id)})});
+  try{await gsCall({action:'fujiSave',fuji:[...up.values()],deleteFuji:[...del],lists:[...ul.values()],deleteLists:[...dl],uses:[...uu.values()],deleteUses:[...du]});FZQ.splice(0,n);try{localStorage.setItem('wn-fuji-q',JSON.stringify(FZQ))}catch(e){}}
   catch(e){if(S.view==='fuji')toast('ยังบันทึกลงชีตไม่ได้ จะลองใหม่อัตโนมัติ')}
   fzBusy=false;
 }
@@ -2521,14 +2562,15 @@ function fzRngHtml(){
   const p=fzPer(),list=fzRows(),s=fzStats(list),f=p.f,to=p.to;
   const dl=d=>{const t=new Date(d+'T00:00');return t.getDate()+' '+FZTH[t.getMonth()]+' '+(t.getFullYear())};
   const mats=fzGroup(list,r=>r.mat||'ไม่ระบุ').sort((a,b)=>b.total-a.total),mx=Math.max(1,...mats.map(m=>m.total));
-  let h=`<div class="sum fz" id="fz"><div class="mchips" role="tablist"><button class="mchip" role="tab" data-fz="v:log">บันทึกงาน</button><button class="mchip" role="tab" data-fz="v:sum">สรุป</button><button class="mchip on" role="tab" aria-selected="true" data-fz="v:rng">สรุปตามช่วงวันที่</button></div><div class="fzrh" style="margin-top:10px"><span>สรุปตามช่วงวันที่</span><span>${dl(f)}</span><span>ถึง</span><span>${dl(to)}</span></div>`;
+  let h=`<div class="sum fz" id="fz"><div class="mchips" role="tablist"><button class="mchip" role="tab" data-fz="v:log">บันทึกงาน</button><button class="mchip" role="tab" data-fz="v:sum">สรุป</button><button class="mchip on" role="tab" aria-selected="true" data-fz="v:rng">สรุปตามช่วงวันที่</button>${fzStockChip(false)}</div><div class="fzrh" style="margin-top:10px"><span>สรุปตามช่วงวันที่</span><span>${dl(f)}</span><span>ถึง</span><span>${dl(to)}</span></div>`;
   h+=`<div class="fzrd"><label>วันที่เริ่ม <input type="date" id="fz-from" value="${f}"></label><label>วันที่สิ้นสุด <input type="date" id="fz-to" value="${to}"></label><span class="fzpre"><button class="mchip" data-fz="rp:7">7 วันล่าสุด</button><button class="mchip" data-fz="rp:30">30 วันล่าสุด</button><button class="mchip" data-fz="rp:y">ปีนี้</button></span></div>`;
-  h+=`<div class="fzk"><div><span>จำนวนที่ผลิต (ใบ)</span><b>${fzNf(s.total)}</b></div><div><span>สำเร็จ</span><b>${fzNf(s.ok)}</b></div><div><span>เสีย</span><b>${fzNf(s.fail)}</b></div><div><span>เฉลี่ยต่อวัน</span><b>${fzNf(s.avg)}</b></div></div>`;
+  h+=`<div class="fzk"><div><span>จำนวนที่ผลิต (ใบ)</span><b>${fzNf(s.total)}</b></div><div><span>สำเร็จ</span><b>${fzNf(s.ok)}</b></div><div><span>เสีย</span><b>${fzNf(s.fail)}</b>${s.keep?`<small>เก็บไว้ใช้ต่อ ${fzNf(s.keep)}</small>`:''}</div><div><span>เฉลี่ยต่อวัน</span><b>${fzNf(s.avg)}</b></div></div>`;
   h+=`<section class="spanel"><h3>วัสดุที่ใช้ในช่วงนี้</h3>`+(mats.length?`<table class="fzt"><thead><tr><th>วัสดุ</th><th>จำนวน</th><th>เสีย</th><th>%เสีย</th></tr></thead><tbody>${mats.map(m=>`<tr><td>${esc(m.k)}</td><td class="n" style="--w:${m.total/mx*100}%">${fzNf(m.total)}</td><td${m.fail?' class="f"':''}>${m.fail?fzNf(m.fail):'-'}</td><td${m.fail?' class="f"':''}>${m.fail?fzPf(m.fail,m.total):'-'}</td></tr>`).join('')}<tr class="tot"><td>รวม</td><td>${fzNf(s.total)}</td><td>${s.fail?fzNf(s.fail):'-'}</td><td>${s.fail?fzPf(s.fail,s.total):'-'}</td></tr></tbody></table>`:'<div class="fzempty">ไม่มีงานในช่วงนี้</div>')+`</section>`;
   return h+'</div>';
 }
 function fzHtml(){
   if(FZ.v==='rng')return fzRngHtml();
+  if(FZ.v==='stock')return fzStockHtml();
   const p=fzPer(),list=fzRows(),s=fzStats(list),months=fzMonths(),w=canWrite();
   let prev='',dpp='',dcls='';
   if(p.t==='month'){const d=new Date(p.k+'-01T00:00');d.setMonth(d.getMonth()-1);const pk=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),ps=fzStats((FZ.rows||[]).filter(r=>r.date.startsWith(pk)));
@@ -2541,15 +2583,16 @@ function fzHtml(){
   else if(FZ.err)h+=`<div class="spanel fzempty" style="color:#c2413b">โหลดข้อมูลผลิต Fuji จาก Google Sheet ไม่ได้ (${esc(FZ.err)}) — ถ้าเป็นข้อความเกี่ยวกับ action หรือ unknown แปลว่า Code.gs ใน Apps Script ยังไม่ใช่รุ่นล่าสุด ให้วางโค้ดใหม่แล้ว Deploy → New version</div>`;
   h+=`<div class="sgrid"><div class="scard hero"><span>ผลิตทั้งหมด</span><b>${fzNf(s.total)}</b><small>${prev||'ใบ'}</small></div>
    <div class="scard"><span>สำเร็จ</span><b>${fzNf(s.ok)}</b><small>${fzPf(s.ok,s.total)}</small></div>
-   <div class="scard"><span>เสีย</span><b class="bad">${fzNf(s.fail)}</b><small class="${dcls}">${dpp||fzPf(s.fail,s.total)}</small></div>
+   <div class="scard"><span>เสีย</span><b class="bad">${fzNf(s.fail)}</b><small class="${dcls}">${dpp||fzPf(s.fail,s.total)}${s.keep?` · เก็บไว้ใช้ต่อ ${fzNf(s.keep)}`:''}</small></div>
    <div class="scard"><span>จำนวนงาน</span><b>${fzNf(s.jobs)}</b><small>${s.nd} วันที่ทำงาน</small></div>
    <div class="scard"><span>เฉลี่ยต่อวัน</span><b>${fzNf(s.avg)}</b><small>ใบ ต่อวันทำงาน</small></div></div>`;
-  h+=`<div class="mchips" role="tablist" aria-label="มุมมอง"><button class="mchip ${FZ.v==='log'?'on':''}" role="tab" aria-selected="${FZ.v==='log'}" data-fz="v:log">บันทึกงาน</button><button class="mchip ${FZ.v==='sum'?'on':''}" role="tab" aria-selected="${FZ.v==='sum'}" data-fz="v:sum">สรุป</button><button class="mchip" role="tab" aria-selected="false" data-fz="v:rng">สรุปตามช่วงวันที่</button></div>`;
+  h+=`<div class="mchips" role="tablist" aria-label="มุมมอง"><button class="mchip ${FZ.v==='log'?'on':''}" role="tab" aria-selected="${FZ.v==='log'}" data-fz="v:log">บันทึกงาน</button><button class="mchip ${FZ.v==='sum'?'on':''}" role="tab" aria-selected="${FZ.v==='sum'}" data-fz="v:sum">สรุป</button><button class="mchip" role="tab" aria-selected="false" data-fz="v:rng">สรุปตามช่วงวันที่</button>${fzStockChip(false)}</div>`;
   if(FZ.rows===null||(FZ.loading&&!FZ.rows.length))h+=`<div class="sumload"><div class="loadbar" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p>กำลังดึงข้อมูลผลิต Fuji…</p></div>`;
   else if(FZ.v==='log')h+=`<div class="fztools"><input type="search" id="fz-q" placeholder="ค้นหาชื่องาน ลูกค้า หรือ ID" value="${esc(FZ.q)}" aria-label="ค้นหา"><div class="mchips" id="fzcats">${fzCatsHtml()}</div></div><div class="fzdays" id="fzlist">${fzListHtml()}</div>`;
   else h+=fzSumHtml(list,s);
-  return h+'</div>';
+  return h+fzDiag()+'</div>';
 }
+function fzDiag(){const u=(window.AP_TEAM?'หน้าทีม (script.google)':(SYNC.url?'GitHub/ลิงก์ + Sheet …'+String(SYNC.url).slice(-14):'ไม่ได้เชื่อม Sheet'));return `<div class="fzempty" style="font-size:11px;opacity:.7;margin-top:10px">ตรวจการเชื่อมต่อ · รุ่น ${(document.querySelector('.brand small')||{}).textContent||''} · ${u} · ในเครื่อง ${(FZ.rows||[]).length} แถว · ${FZ.diag||'ยังไม่โหลด'}</div>`}
 function fzCatsHtml(){return ['',...FZGROUPS,'__p'].map(c=>`<button class="mchip ${FZ.cat===c?'on':''}" data-fz="c:${c}">${c==='__p'?'เฉพาะงานที่มีปัญหา':c||'ทุกวัสดุ'}</button>`).join('')}
 function fzSeedBtn(){return (fzOnline()&&FZ.rows&&!FZ.rows.length&&!FZ.loading&&canWrite())?`<div class="spanel fzempty">ใน Google Sheet ยังไม่มีข้อมูลเลย<br><button class="btn pri fzbtn" data-fz="seed" style="margin-top:8px">นำเข้าข้อมูลเดิมจาก Excel (1,621 แถว)</button></div>`:''}
 function fzListHtml(){
@@ -2563,7 +2606,7 @@ function fzListHtml(){
     if(n>=FZ.shown)break;const s=fzStats(rs);
     h+=`<div id="fzd-${d}"><div class="fzdayh"><h3>${fzDL(d)}</h3><span><b>${rs.length}</b> งาน · <b>${fzNf(s.total)}</b> ใบ${s.fail?` · เสีย <b style="color:#e5484d">${s.fail}</b> (${fzPf(s.fail,s.total)})`:''}</span>${canWrite()?`<button class="fzadd1" data-fz="addd:${d}" title="เพิ่มงานในวันที่ ${fzDL(d)}">+ เพิ่มงาน</button>`:''}</div><div class="spanel fzrows">`;
     for(const r of rs){if(n>=FZ.shown)break;n++;
-      h+=`<button class="fzrow" data-fz="e:${esc(r.id)}"><div><div class="fznm">${esc(fzClean(r.name))}</div><div class="fzmeta"><span class="fzmat ${FZCLS[fzCat(r.mat)]}"><i></i>${esc(r.mat||'ไม่ระบุวัสดุ')}</span>${r.set&&r.set!==r.mat?`<span>${esc(r.set)}</span>`:''}${r.cust?`<span>${esc(r.cust)}</span>`:''}${r.jid?`<span class="fzid">#${r.jid}</span>`:''}${r.note?`<span class="fznote">${esc(r.note)}</span>`:''}</div></div><div class="fzqty"><b>${fzNf(fzTot(r))}</b><small${r.fail?' class="f"':''}>${r.fail?'เสีย '+r.fail:'ใบ'}</small></div></button>`}
+      h+=`<button class="fzrow" data-fz="e:${esc(r.id)}"><div><div class="fznm">${esc(fzClean(r.name))}</div><div class="fzmeta"><span class="fzmat ${FZCLS[fzCat(r.mat)]}"><i></i>${esc(r.mat||'ไม่ระบุวัสดุ')}</span>${r.set&&r.set!==r.mat?`<span>${esc(r.set)}</span>`:''}${r.cust?`<span>${esc(r.cust)}</span>`:''}${r.jid?`<span class="fzid">#${r.jid}</span>`:''}${r.note?`<span class="fznote">${esc(r.note)}</span>`:''}${r.keep?`<span class="fzkp">เก็บไว้ ${Math.max(0,r.keep-fzUsed(r.id))}/${r.keep}</span>`:''}</div></div><div class="fzqty"><b>${fzNf(fzTot(r))}</b><small${r.fail?' class="f"':''}>${r.fail?'เสีย '+r.fail:'ใบ'}</small></div></button>`}
     h+='</div></div>';
   }
   if(n<list.length)h+=`<button class="btn fzbtn" data-fz="more" style="align-self:center">แสดงเพิ่ม (เหลือ ${list.length-n} งาน)</button>`;
@@ -2654,6 +2697,71 @@ function fzMatOptions(sel){
   const grp=g=>`<optgroup label="${g}">${L.filter(x=>(FZGROUPS.includes(x.cat)?x.cat:'วัสดุอื่น')===g).map(x=>`<option ${x.name===sel?'selected':''}>${esc(x.name)}</option>`).join('')}${g==='วัสดุอื่น'?[...extra].sort().map(m=>`<option ${m===sel?'selected':''}>${esc(m)}</option>`).join(''):''}</optgroup>`;
   return `<option value="">เลือกวัสดุ</option>`+FZGROUPS.map(grp).join('')+`<option value="__new">+ เพิ่มวัสดุใหม่…</option>`;
 }
+
+function fzStockChip(on){const n=fzLots().reduce((a,l)=>a+l.left,0);return `<button class="mchip ${on?'on':''}" role="tab" aria-selected="${!!on}" data-fz="v:stock">ของที่เก็บไว้${n?` (${fzNf(n)})`:''}</button>`}
+function fzStockListHtml(){
+  const w=canWrite(),sf=FZ.sf||'ready',q=(FZ.sq||'').trim().toLowerCase();
+  let list=fzLots().filter(l=>sf==='all'||(sf==='ready'?l.left>0:l.left===0));
+  if(q)list=list.filter(l=>(l.r.name+' '+l.r.cust+' '+l.r.mat+' '+l.r.set+' '+l.r.knote+' '+l.r.jid).toLowerCase().includes(q));
+  if(!list.length)return `<div class="spanel fzempty">${fzLots().length?'ไม่พบรายการที่ตรงกับตัวกรอง':'ยังไม่มีของที่เก็บไว้ — ตอนบันทึกงานที่มีใบเสียและยังใช้ต่อได้ ให้ใส่จำนวนที่ช่อง "เก็บใบเสียไว้ใช้ต่อ"'}</div>`;
+  return list.slice(0,200).map(l=>{const r=l.r,us=(FZ.uses||[]).filter(u=>u.rid===r.id).sort((a,b)=>a.date<b.date?1:-1);
+    return `<div class="spanel fzstk"><div class="fzstkh"><div class="fzstkm"><div class="fznm">${esc(fzClean(r.name))}</div><div class="fzmeta"><span class="fzmat ${FZCLS[fzCat(r.mat)]}"><i></i>${esc(r.mat||'ไม่ระบุวัสดุ')}</span>${r.set&&r.set!==r.mat?`<span>${esc(r.set)}</span>`:''}${r.cust?`<span>งานของ ${esc(r.cust)}</span>`:''}${r.jid?`<span class="fzid">#${r.jid}</span>`:''}<span>${fzDL(r.date)}</span></div>${r.knote?`<div class="fzknote">${esc(r.knote)}</div>`:''}</div><div class="fzqty fzstkq"><b class="${l.left?'':'z'}">${fzNf(l.left)}</b><small>จาก ${fzNf(r.keep)} ใบ</small>${w&&l.left?`<button class="btn pri fzbtn" data-fz="use:${esc(r.id)}">ใช้</button>`:''}</div></div>${us.length?`<div class="fzuses">${us.map(u=>`<div><span>ใช้ ${fzNf(u.qty)} ใบ · ${esc(u.cust||'ไม่ระบุลูกค้า')} · ${fzDL(u.date)}${u.note?' · '+esc(u.note):''}</span>${w?`<button type="button" class="fzundo" data-fz="ud:${esc(u.id)}">ยกเลิก</button>`:''}</div>`).join('')}</div>`:''}</div>`}).join('');
+}
+function fzStockHtml(){
+  const lots=fzLots(),left=lots.reduce((a,l)=>a+l.left,0),used=lots.reduce((a,l)=>a+l.used,0),keep=lots.reduce((a,l)=>a+l.r.keep,0),nready=lots.filter(l=>l.left>0).length,sf=FZ.sf||'ready';
+  const by=new Map();lots.filter(l=>l.left>0).forEach(l=>{const k=(l.r.mat||'ไม่ระบุวัสดุ')+(l.r.set&&l.r.set!==l.r.mat?' · '+l.r.set:'');by.set(k,(by.get(k)||0)+l.left)});
+  let h=`<div class="sum fz" id="fz"><div class="mchips" role="tablist"><button class="mchip" role="tab" data-fz="v:log">บันทึกงาน</button><button class="mchip" role="tab" data-fz="v:sum">สรุป</button><button class="mchip" role="tab" data-fz="v:rng">สรุปตามช่วงวันที่</button>${fzStockChip(true)}</div>`;
+  h+=`<div class="sumhead" style="margin-top:12px"><div><h2>ของที่เก็บไว้ใช้ซ้ำ</h2><p>ใบเสียที่ยังใช้ได้ เก็บไว้ให้ลูกค้าคนอื่นหรืองานถัดไป พอมีงานมาให้กด "ใช้" ระบบจะหักยอดให้และจำว่าใช้กับใคร</p></div><div class="fzact"><button class="btn fzbtn" data-fz="refresh">${FZ.loading?'กำลังโหลด…':'รีเฟรช'}</button></div></div>`;
+  if(!fzOnline())h+=`<div class="spanel fzempty" style="color:#c2413b">เครื่องนี้ยังไม่ได้เชื่อม Google Sheet จึงเห็นเฉพาะข้อมูลที่บันทึกในเครื่องนี้</div>`;
+  else if(FZ.noUses)h+=`<div class="spanel fzempty" style="color:#c2413b">Code.gs ที่ลิงก์นี้ใช้อยู่ยังไม่รองรับ "ของที่เก็บไว้" — วางโค้ดใหม่แล้ว Deploy → New version ไม่เช่นนั้นข้อมูลการใช้จะไม่ถูกบันทึกลง Sheet</div>`;
+  else if(FZ.err)h+=`<div class="spanel fzempty" style="color:#c2413b">โหลดข้อมูลจาก Google Sheet ไม่ได้ (${esc(FZ.err)})</div>`;
+  h+=`<div class="fzk nc"><div><span>เหลือพร้อมใช้ (ใบ)</span><b>${fzNf(left)}</b></div><div><span>รายการที่ยังเหลือ</span><b>${fzNf(nready)}</b></div><div><span>ใช้ไปแล้ว (ใบ)</span><b>${fzNf(used)}</b></div><div><span>เก็บไว้ทั้งหมด (ใบ)</span><b>${fzNf(keep)}</b></div></div>`;
+  if(by.size)h+=`<section class="spanel"><h3>เหลือแยกตามวัสดุ</h3><div class="fzchips">${[...by].sort((a,b)=>b[1]-a[1]).map(([k,n])=>`<span class="fzkp big">${esc(k)} · <b>${fzNf(n)}</b> ใบ</span>`).join('')}</div></section>`;
+  h+=`<div class="fztools"><input type="search" id="fz-sq" placeholder="ค้นหาชื่องาน ลูกค้า วัสดุ หรือหมายเหตุ" value="${esc(FZ.sq||'')}" aria-label="ค้นหา"><div class="mchips"><button class="mchip ${sf==='ready'?'on':''}" data-fz="sf:ready">พร้อมใช้</button><button class="mchip ${sf==='used'?'on':''}" data-fz="sf:used">ใช้หมดแล้ว</button><button class="mchip ${sf==='all'?'on':''}" data-fz="sf:all">ทั้งหมด</button></div></div><div class="fzdays" id="fzstklist">${fzStockListHtml()}</div>`;
+  return h+fzDiag()+'</div>';
+}
+function fzUseDialog(rid){
+  const r=(FZ.rows||[]).find(x=>x.id===rid);if(!r)return;const left=Math.max(0,r.keep-fzUsed(rid));if(!left)return toast('ใช้หมดแล้ว');
+  FZ.dlg={use:rid};
+  let sc=document.getElementById('fzscrim');
+  if(!sc){sc=document.createElement('div');sc.id='fzscrim';sc.innerHTML='<div id="fzpanel" role="dialog" aria-modal="true" aria-label="ใช้ของที่เก็บไว้"></div>';document.body.appendChild(sc);
+    sc.addEventListener('mousedown',e=>{if(e.target===sc)fzClose()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&FZ.dlg)fzClose()})}
+  const custs=[...new Set([...fzList('cust').map(x=>x.name),...fzGroup(FZ.rows||[],x=>x.cust).filter(g=>g.k).sort((a,b)=>b.n-a.n).slice(0,300).map(g=>g.k)])];
+  document.getElementById('fzpanel').innerHTML=`<h3>ใช้ของที่เก็บไว้<button type="button" class="bt" data-fzd="close" aria-label="ปิด">ปิด</button></h3>
+  <p class="fzuinfo"><b>${esc(fzClean(r.name))}</b><br>${esc(r.mat||'ไม่ระบุวัสดุ')}${r.set&&r.set!==r.mat?' · '+esc(r.set):''}${r.knote?' · '+esc(r.knote):''}<br>เหลือพร้อมใช้ <b>${fzNf(left)}</b> ใบ</p>
+  <form id="fzuform" autocomplete="off">
+   <div class="f s6"><label for="fz-udate">วันที่ใช้</label><input type="date" id="fz-udate" value="${fzEntryDate()}"></div>
+   <div class="f s6"><label for="fz-uq">จำนวนที่ใช้ (ใบ)</label><div class="stp"><button type="button" data-fzstep="fz-uq:-1" aria-label="ลด">−</button><input type="number" inputmode="numeric" id="fz-uq" min="1" max="${left}" value="${left}"><button type="button" data-fzstep="fz-uq:1" aria-label="เพิ่ม">+</button></div></div>
+   <div class="f s12"><label for="fz-ucust">ใช้กับลูกค้า</label><input type="text" id="fz-ucust" list="fz-ucusts" placeholder="พิมพ์หรือเลือก"><datalist id="fz-ucusts">${custs.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div>
+   <div class="f s12"><label for="fz-unote">หมายเหตุ (ถ้ามี)</label><input type="text" id="fz-unote" placeholder="เช่น ใช้กับงาน #3300"></div>
+   <div class="f s12"><div class="acts"><span class="err" id="fz-uerr" role="alert"></span><button type="submit" class="bt pri">บันทึกการใช้</button></div></div>
+  </form>`;
+  sc.classList.add('on');setTimeout(()=>{const f=document.getElementById('fz-ucust');f&&f.focus()},60);
+}
+function fzUseSubmit(){
+  const g=i=>document.getElementById(i),err=m=>{g('fz-uerr').textContent=m};
+  const rid=FZ.dlg&&FZ.dlg.use,r=(FZ.rows||[]).find(x=>x.id===rid);if(!r)return fzClose();
+  const left=Math.max(0,r.keep-fzUsed(rid)),qty=fzN(g('fz-uq').value),date=g('fz-udate').value;
+  if(!date)return err('ใส่วันที่ก่อน');if(qty<1)return err('ใส่จำนวนที่ใช้ อย่างน้อย 1 ใบ');if(qty>left)return err('เหลือแค่ '+left+' ใบ');
+  const cust=g('fz-ucust').value.trim();
+  const u={id:fzNewId('u'),rid,date,qty,cust,note:g('fz-unote').value.trim(),by:(typeof myName==='function'?myName():'')||''};
+  (FZ.uses||(FZ.uses=[])).push(u);
+  const nl=[],L=fzLists();if(cust&&!L.some(x=>x.type==='cust'&&x.name===cust)){const c={id:fzNewId('c'),type:'cust',name:cust,cat:''};L.push(c);nl.push(c)}
+  fzQueue([],[],nl,[],[u],[]);toast('บันทึกแล้ว · ใช้ '+fzNf(qty)+' ใบ'+(cust?' · '+cust:''));fzClose();FZ.dirty=true;renderCanvas();
+}
+function fzUndoUse(id,btn){
+  if(!btn.classList.contains('sure')){btn.classList.add('sure');btn.textContent='กดอีกครั้งเพื่อยกเลิก';setTimeout(()=>{btn.classList.remove('sure');btn.textContent='ยกเลิก'},3500);return}
+  FZ.uses=(FZ.uses||[]).filter(u=>u.id!==id);fzQueue([],[],[],[],[],[id]);toast('ยกเลิกการใช้แล้ว คืนยอดเข้าของที่เก็บไว้');FZ.dirty=true;renderCanvas();
+}
+function fzKeepSync(){
+  const f=document.getElementById('fz-fail'),b=document.getElementById('fz-keepbox');if(!f||!b)return;
+  const n=fzN(f.value);b.style.display=n>0?'':'none';const k=document.getElementById('fz-keep');if(k&&fzN(k.value)>n)k.value=n;
+}
+const fzSetList=()=>{const cnt=new Map();(FZ.rows||[]).forEach(r=>{if(r.set)cnt.set(r.set,(cnt.get(r.set)||0)+1)});
+  const top=[...cnt].filter(x=>x[1]>=10&&!/\d{4,}/.test(x[0])).sort((a,b)=>b[1]-a[1]).map(x=>x[0]).slice(0,10);
+  return [...new Set([FZSETDEF,...fzList('set').map(x=>fzSetNorm(x.name)).filter(Boolean),...top])]};
+function fzSetOptions(sel){const L=fzSetList();if(sel&&!L.includes(sel))L.push(sel);
+  return L.map(x=>`<option ${x===sel?'selected':''}>${esc(x)}</option>`).join('')+`<option value="" ${sel===''?'selected':''}>(ไม่ระบุ)</option><option value="__new">+ เพิ่ม Setting ใหม่…</option>`}
 const fzDateLabel=d=>fzDL(d)+' '+(+d.slice(0,4)+543)+(d===TODAY()?' (วันนี้)':'');
 function fzDialog(id){
   const r=id?(FZ.rows||[]).find(x=>x.id===id):null;if(id&&!r)return;
@@ -2669,16 +2777,17 @@ function fzDialog(id){
    <div class="f s3"><label for="fz-id">ID</label><input type="number" inputmode="numeric" id="fz-id" placeholder="3205" value="${r&&r.jid?r.jid:''}"></div>
    <div class="f s9"><label for="fz-name">ชื่องาน</label><input type="text" id="fz-name" placeholder="เช่น PDF_พี่เย็น.pdf" value="${r?esc(r.name):''}"></div>
    <div class="f s6"><label for="fz-mat">วัสดุ</label><select id="fz-mat">${fzMatOptions(r?r.mat:'')}</select><div id="fz-newmat" style="display:none;gap:8px;grid-template-columns:1fr 130px"><input type="text" id="fz-mat2" placeholder="ชื่อวัสดุใหม่"><select id="fz-matc" aria-label="หมวดวัสดุ">${FZGROUPS.map(g=>`<option>${g}</option>`).join('')}</select></div></div>
-   <div class="f s6"><label for="fz-set">Setting</label><input type="text" id="fz-set" placeholder="เช่น PP 140g" value="${r?esc(r.set):''}"></div>
+   <div class="f s6"><label for="fz-set">Setting</label><select id="fz-set">${fzSetOptions(r?r.set:FZSETDEF)}</select><input type="text" id="fz-set2" placeholder="ชื่อ Setting ใหม่ เช่น PP 140g" style="display:none;margin-top:8px"></div>
    <div class="f s3"><label for="fz-ok">สำเร็จ (ใบ)</label><div class="stp"><button type="button" data-fzstep="fz-ok:-1" aria-label="ลดสำเร็จ">−</button><input type="number" inputmode="numeric" id="fz-ok" min="0" value="${r?r.ok:''}"><button type="button" data-fzstep="fz-ok:1" aria-label="เพิ่มสำเร็จ">+</button></div></div>
    <div class="f s3"><label for="fz-fail">เสีย (ใบ)</label><div class="stp bad"><button type="button" data-fzstep="fz-fail:-1" aria-label="ลดเสีย">−</button><input type="number" inputmode="numeric" id="fz-fail" min="0" value="${r?r.fail:0}"><button type="button" data-fzstep="fz-fail:1" aria-label="เพิ่มเสีย">+</button></div></div>
    <div class="f s6"><label for="fz-cust">ลูกค้า</label><input type="text" id="fz-cust" list="fz-custs" placeholder="พิมพ์หรือเลือก" value="${r?esc(r.cust):''}"><datalist id="fz-custs">${custs.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div>
+   <div class="f s12" id="fz-keepbox" style="display:none"><label>เก็บใบเสียไว้ใช้ต่อ</label><div class="fzkeep"><div class="stp"><button type="button" data-fzstep="fz-keep:-1" aria-label="ลดจำนวนที่เก็บ">−</button><input type="number" inputmode="numeric" id="fz-keep" min="0" value="${r&&r.keep?r.keep:0}"><button type="button" data-fzstep="fz-keep:1" aria-label="เพิ่มจำนวนที่เก็บ">+</button></div><input type="text" id="fz-knote" placeholder="หมายเหตุ เช่น สีเพี้ยนนิดเดียว ใช้กับงานทดสอบได้" value="${r?esc(r.knote):''}"></div><small class="fzhint">ใส่เฉพาะใบเสียที่ยังใช้ได้ ระบบแยกไปไว้ที่แท็บ "ของที่เก็บไว้" ให้กด "ใช้" ตอนมีลูกค้าสั่ง</small></div>
    <div class="f s12"><label>ปัญหาที่พบ (ถ้ามี)</label><div class="pills" id="fz-pills">${FZNOTES.map(n=>`<button type="button" class="pill" data-fzp="${esc(n)}" aria-pressed="${FZ.dlg.note===n}">${esc(n)}</button>`).join('')}</div></div>
    <div class="f s12"><div class="acts"><span class="err" id="fz-err" role="alert"></span><span class="tot">รวม <b id="fz-tot">${r?fzNf(fzTot(r)):0}</b> ใบ</span>
      ${r?`<button type="button" class="bt bad" data-fzd="del">ลบงานนี้</button>`:`<button type="submit" class="bt" data-fzd="again">บันทึกแล้วเพิ่มอีก</button>`}
      <button type="submit" class="bt pri" data-fzd="save">${r?'บันทึกการแก้ไข':'บันทึก'}</button></div></div>
   </form>`;
-  const sel=document.getElementById('fz-mat');if(r&&r.mat)sel.value=r.mat;
+  const sel=document.getElementById('fz-mat');if(r&&r.mat)sel.value=r.mat;fzKeepSync();
   sc.classList.add('on');setTimeout(()=>{const f=document.getElementById(r?'fz-ok':'fz-id');f&&f.focus()},60);
 }
 function fzClose(){const sc=document.getElementById('fzscrim');if(sc)sc.classList.remove('on');FZ.dlg=null}
@@ -2689,13 +2798,17 @@ function fzSubmit(again){
   if(!g('fz-date').value)return err('ใส่วันที่ก่อน');
   if(!name){g('fz-name').focus();return err('ใส่ชื่องานก่อน')}
   if(ok+fail<=0){g('fz-ok').focus();return err('ใส่จำนวนใบที่สำเร็จหรือเสียอย่างน้อย 1 ใบ')}
-  const o={id:FZ.dlg.id||('f'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)),date:g('fz-date').value,jid:fzN(g('fz-id').value)||'',name,mat,ok,fail,set:g('fz-set').value.trim(),cust:g('fz-cust').value.trim(),note:FZ.dlg.note,by:(typeof myName==='function'?myName():'')||''};
+  let st=g('fz-set').value,newSet=null;if(st==='__new'){st=fzSetNorm(g('fz-set2').value);if(!st){g('fz-set2').focus();return err('ใส่ชื่อ Setting ใหม่ก่อน')}newSet={id:fzNewId('s'),type:'set',name:st,cat:''}}
+  const keep=Math.min(fzN(g('fz-keep').value),fail),knote=keep?g('fz-knote').value.trim():'';
+  if(FZ.dlg.id&&keep<fzUsed(FZ.dlg.id))return err('ใบที่เก็บไว้ต้องไม่น้อยกว่าที่ใช้ไปแล้ว ('+fzUsed(FZ.dlg.id)+' ใบ)');
+  const o={id:FZ.dlg.id||('f'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)),date:g('fz-date').value,jid:fzN(g('fz-id').value)||'',name,mat,ok,fail,set:st,cust:g('fz-cust').value.trim(),note:FZ.dlg.note,keep,knote,by:(typeof myName==='function'?myName():'')||''};
   const rows=FZ.rows||(FZ.rows=[]),i=rows.findIndex(x=>x.id===o.id);
   if(i>=0)rows[i]=o;else rows.push(o);
   if(!FZ.dlg.id)FZ.edate=o.date===TODAY()?null:o.date;
   const k=o.date.slice(0,7),p=fzPer();if(p.t==='month'&&p.k!==k)FZ.per={t:'month',k};else if(p.t==='range'&&(o.date<p.f||o.date>p.to))FZ.per={t:'month',k};
   const nl=[];const L=fzLists();
   if(newMat&&!L.some(x=>x.type==='mat'&&x.name===newMat.name)){L.push(newMat);nl.push(newMat);fzMM=null}
+  if(newSet&&!L.some(x=>x.type==='set'&&x.name===newSet.name)){L.push(newSet);nl.push(newSet)}
   if(o.cust&&!L.some(x=>x.type==='cust'&&x.name===o.cust)){const c={id:fzNewId('c'),type:'cust',name:o.cust,cat:''};L.push(c);nl.push(c)}
   fzQueue([o],[],nl,[]);toast(i>=0?'บันทึกการแก้ไขแล้ว':'บันทึกแล้ว · '+fzClean(name)+' · '+fzNf(ok+fail)+' ใบ');
   if(again&&i<0){fzDialog(null);const g2=document.getElementById('fz-id');g2&&g2.focus()}else fzClose();
@@ -2703,7 +2816,7 @@ function fzSubmit(again){
 }
 function fzDelete(btn){
   if(!btn.classList.contains('sure')){btn.classList.add('sure');btn.textContent='กดอีกครั้งเพื่อลบ';setTimeout(()=>{btn.classList.remove('sure');btn.textContent='ลบงานนี้'},3500);return}
-  const id=FZ.dlg.id;FZ.rows=(FZ.rows||[]).filter(r=>r.id!==id);fzQueue([],[id]);fzClose();toast('ลบงานแล้ว');FZ.dirty=true;renderCanvas();
+  const id=FZ.dlg.id,du=(FZ.uses||[]).filter(u=>u.rid===id).map(u=>u.id);FZ.rows=(FZ.rows||[]).filter(r=>r.id!==id);FZ.uses=(FZ.uses||[]).filter(u=>u.rid!==id);fzQueue([],[id],[],[],[],du);fzClose();toast('ลบงานแล้ว');FZ.dirty=true;renderCanvas();
 }
 /* manage material / customer names */
 function fzListsDialog(tab){
@@ -2715,21 +2828,21 @@ function fzListsDialog(tab){
 }
 function fzListsRender(){
   const t=FZ.dlg.tab,q=(FZ.dlg.q||'').trim().toLowerCase(),isM=t==='mat';
-  const used=new Map();(FZ.rows||[]).forEach(r=>{const k=isM?r.mat:r.cust;if(k)used.set(k,(used.get(k)||0)+1)});
+  const used=new Map();(FZ.rows||[]).forEach(r=>{const k=t==='set'?r.set:(isM?r.mat:r.cust);if(k)used.set(k,(used.get(k)||0)+1)});
   const items=fzList(t).filter(x=>!q||x.name.toLowerCase().includes(q)).sort((a,b)=>isM?(FZGROUPS.indexOf(a.cat)-FZGROUPS.indexOf(b.cat))||a.name.localeCompare(b.name,'th'):a.name.localeCompare(b.name,'th'));
   document.getElementById('fzpanel').innerHTML=`<h3>วัสดุและลูกค้า<button type="button" class="bt" data-fzd="close" aria-label="ปิด">ปิด</button></h3>
-  <div class="pills tabs" style="margin-bottom:10px"><button type="button" class="pill" data-fzl="tab:mat" aria-pressed="${isM}">วัสดุ (${fzList('mat').length})</button><button type="button" class="pill" data-fzl="tab:cust" aria-pressed="${!isM}">ลูกค้า (${fzList('cust').length})</button></div>
-  <form id="fzlform" class="fzadd" autocomplete="off"><input type="text" id="fzl-name" placeholder="${isM?'ชื่อวัสดุใหม่ เช่น PP 140g':'ชื่อลูกค้าใหม่'}" aria-label="ชื่อใหม่">${isM?`<select id="fzl-cat" aria-label="หมวดวัสดุ">${FZGROUPS.map(g=>`<option>${g}</option>`).join('')}</select>`:''}<button type="submit" class="bt pri">เพิ่ม</button></form>
+  <div class="pills tabs" style="margin-bottom:10px"><button type="button" class="pill" data-fzl="tab:mat" aria-pressed="${isM}">วัสดุ (${fzList('mat').length})</button><button type="button" class="pill" data-fzl="tab:cust" aria-pressed="${t==='cust'}">ลูกค้า (${fzList('cust').length})</button><button type="button" class="pill" data-fzl="tab:set" aria-pressed="${t==='set'}">Setting (${fzList('set').length})</button></div>
+  <form id="fzlform" class="fzadd" autocomplete="off"><input type="text" id="fzl-name" placeholder="${isM?'ชื่อวัสดุใหม่ เช่น PP 140g':t==='set'?'ชื่อ Setting ใหม่ เช่น PP 140g':'ชื่อลูกค้าใหม่'}" aria-label="ชื่อใหม่">${isM?`<select id="fzl-cat" aria-label="หมวดวัสดุ">${FZGROUPS.map(g=>`<option>${g}</option>`).join('')}</select>`:''}<button type="submit" class="bt pri">เพิ่ม</button></form>
   <div class="err" id="fzl-err" role="alert"></div>
   <input type="search" id="fzl-q" placeholder="ค้นหาในรายชื่อ" value="${esc(FZ.dlg.q||'')}" aria-label="ค้นหา" style="margin:8px 0">
   <div class="fzlist">${items.length?items.map(x=>`<div class="fzli"><span class="nm">${esc(x.name)}</span>${isM?`<select data-fzcat="${esc(x.id)}" aria-label="หมวดของ ${esc(x.name)}">${FZGROUPS.map(g=>`<option ${g===x.cat?'selected':''}>${g}</option>`).join('')}</select>`:''}<span class="u">${used.get(x.name)||0} งาน</span><button type="button" class="bt bad" data-fzl="del:${esc(x.id)}">ลบ</button></div>`).join(''):'<div class="fzempty">ยังไม่มีรายชื่อ พิมพ์ชื่อด้านบนแล้วกด "เพิ่ม"</div>'}</div>
-  <p class="note" style="font-size:12.5px;color:#5b6d62;margin:10px 0 0">ลบชื่อออกจากรายการเลือกเท่านั้น งานที่บันทึกไปแล้วยังอยู่ครบ ${isM?'วัสดุที่ถูกลบจะนับเป็น "วัสดุอื่น" ในสรุป':'ลูกค้าที่เคยพิมพ์แล้วจะยังขึ้นให้เลือกอยู่'}</p>`;
+  <p class="note" style="font-size:12.5px;color:#5b6d62;margin:10px 0 0">ลบชื่อออกจากรายการเลือกเท่านั้น งานที่บันทึกไปแล้วยังอยู่ครบ ${isM?'วัสดุที่ถูกลบจะนับเป็น "วัสดุอื่น" ในสรุป':t==='set'?'Setting ที่ใช้บ่อย (10 งานขึ้นไป) จะขึ้นให้เลือกอยู่แล้วแม้ไม่ได้เพิ่มไว้ที่นี่ PP 140g เป็นค่าเริ่มต้นเสมอ':'ลูกค้าที่เคยพิมพ์แล้วจะยังขึ้นให้เลือกอยู่'}</p>`;
 }
 function fzListAdd(){
   const n=document.getElementById('fzl-name').value.trim(),t=FZ.dlg.tab,err=m=>{document.getElementById('fzl-err').textContent=m};
   if(!n)return err('พิมพ์ชื่อก่อน');
   const L=fzLists();if(L.some(x=>x.type===t&&x.name.toLowerCase()===n.toLowerCase()))return err('มีชื่อนี้อยู่แล้ว');
-  const x={id:fzNewId(t==='mat'?'m':'c'),type:t,name:n,cat:t==='mat'?document.getElementById('fzl-cat').value:''};
+  const x={id:fzNewId(t==='mat'?'m':t==='set'?'s':'c'),type:t,name:t==='set'?fzSetNorm(n):n,cat:t==='mat'?document.getElementById('fzl-cat').value:''};
   L.push(x);fzMM=null;fzQueue([],[],[x],[]);fzSave();FZ.dlg.q='';fzListsRender();document.getElementById('fzl-name').focus();toast('เพิ่ม "'+n+'" แล้ว');FZ.dirty=true;
 }
 function fzListDel(id,btn){
@@ -2776,7 +2889,7 @@ document.addEventListener('click',e=>{
   const d=e.target.closest&&e.target.closest('#fzpanel [data-fzd],#fzpanel [data-fzp],#fzpanel [data-fzstep]');
   if(d){
     if(d.dataset.fzp!==undefined){FZ.dlg.note=FZ.dlg.note===d.dataset.fzp?'':d.dataset.fzp;document.querySelectorAll('#fz-pills .pill').forEach(p=>p.setAttribute('aria-pressed',p.dataset.fzp===FZ.dlg.note));return}
-    if(d.dataset.fzstep){const[id,n]=d.dataset.fzstep.split(':'),i=document.getElementById(id);i.value=Math.max(0,fzN(i.value)+Number(n));fzTotal();return}
+    if(d.dataset.fzstep){const[id,n]=d.dataset.fzstep.split(':'),i=document.getElementById(id);i.value=Math.max(0,fzN(i.value)+Number(n));fzTotal();fzKeepSync();return}
     const a=d.dataset.fzd;if(a==='close')fzClose();else if(a==='del')fzDelete(d);
     else if(a==='chdate'){const i=document.getElementById('fz-date');i.hidden=false;try{i.showPicker()}catch(x){i.focus()}}
     else if(a==='today'){const i=document.getElementById('fz-date');i.value=TODAY();fzDateChanged()}
@@ -2798,6 +2911,9 @@ document.addEventListener('click',e=>{
   else if(a==='seed'){toast('กำลังนำเข้าข้อมูล…');gsCall({action:'fujiSeed'}).then(j=>{toast(j&&j.count?'นำเข้าแล้ว '+j.count+' แถว':'ไม่มีข้อมูลให้นำเข้า (Code.gs อาจเป็นรุ่นเก่า)');FZ.autoPer=0;fzLoad(true)}).catch(()=>toast('นำเข้าไม่ได้ — Code.gs ใน Apps Script ยังไม่ใช่รุ่นล่าสุด (ต้อง Deploy New version)'))}
   else if(a.startsWith('v:')){FZ.v=a.slice(2);if(FZ.v==='rng'&&fzPer().t!=='range'){const last=(FZ.rows||[]).map(r=>r.date).sort().pop()||TODAY();FZ.per={t:'range',f:last.slice(0,7)+'-01',to:last};FZ.shown=100}fzDirty()}
   else if(a.startsWith('c:')){FZ.cat=FZ.cat===a.slice(2)?'':a.slice(2);FZ.shown=100;const c=document.getElementById('fzcats'),l=document.getElementById('fzlist');if(c&&l){c.innerHTML=fzCatsHtml();l.innerHTML=fzListHtml()}else fzDirty()}
+  else if(a.startsWith('use:')){if(!canWrite())return toast('เปิดดูอย่างเดียว แก้ไขไม่ได้');fzUseDialog(a.slice(4))}
+  else if(a.startsWith('ud:'))fzUndoUse(a.slice(3),b)
+  else if(a.startsWith('sf:')){FZ.sf=a.slice(3);fzDirty()}
   else if(a.startsWith('e:')){if(!canWrite())return toast('เปิดดูอย่างเดียว แก้ไขไม่ได้');fzDialog(a.slice(2))}
 });
 function fzDateChanged(){
@@ -2806,14 +2922,16 @@ function fzDateChanged(){
   document.getElementById('fz-today').hidden=i.value===TODAY();i.hidden=true;
   if(!FZ.dlg.id)FZ.edate=i.value===TODAY()?null:i.value;
 }
-function fzTotal(){const t=document.getElementById('fz-tot');if(t)t.textContent=fzNf(fzN(document.getElementById('fz-ok').value)+fzN(document.getElementById('fz-fail').value))}
-document.addEventListener('submit',e=>{if(e.target.id==='fzlform'){e.preventDefault();fzListAdd();return}if(e.target.id==='fzform'){e.preventDefault();const a=FZ._again;FZ._again=false;fzSubmit(a)}});
+function fzTotal(){const t=document.getElementById('fz-tot');if(t&&document.getElementById('fz-ok'))t.textContent=fzNf(fzN(document.getElementById('fz-ok').value)+fzN(document.getElementById('fz-fail').value))}
+document.addEventListener('submit',e=>{if(e.target.id==='fzuform'){e.preventDefault();fzUseSubmit();return}if(e.target.id==='fzlform'){e.preventDefault();fzListAdd();return}if(e.target.id==='fzform'){e.preventDefault();const a=FZ._again;FZ._again=false;fzSubmit(a)}});
 document.addEventListener('input',e=>{const id=e.target.id;
   if(id==='fzl-q'){FZ.dlg.q=e.target.value;const pos=e.target.selectionStart;fzListsRender();const q=document.getElementById('fzl-q');q.focus();try{q.setSelectionRange(pos,pos)}catch(x){}}
   else if(id==='fz-q'){FZ.q=e.target.value;FZ.shown=100;const l=document.getElementById('fzlist');if(l)l.innerHTML=fzListHtml()}
-  else if(id==='fz-ok'||id==='fz-fail')fzTotal()});
+  else if(id==='fz-sq'){FZ.sq=e.target.value;const l=document.getElementById('fzstklist');if(l)l.innerHTML=fzStockListHtml()}
+  else if(id==='fz-ok'||id==='fz-fail'||id==='fz-keep'){fzTotal();fzKeepSync()}});
 document.addEventListener('change',e=>{const id=e.target.id;
-  if(id==='fz-mat'){const n=document.getElementById('fz-newmat'),on=e.target.value==='__new';n.style.display=on?'grid':'none';if(on)document.getElementById('fz-mat2').focus()}
+  if(id==='fz-set'){const n=document.getElementById('fz-set2'),on=e.target.value==='__new';n.style.display=on?'block':'none';if(on)n.focus()}
+  else if(id==='fz-mat'){const n=document.getElementById('fz-newmat'),on=e.target.value==='__new';n.style.display=on?'grid':'none';if(on)document.getElementById('fz-mat2').focus()}
   else if(e.target.dataset&&e.target.dataset.fzcat){const x=fzLists().find(y=>y.id===e.target.dataset.fzcat);if(x){x.cat=e.target.value;fzQueue([],[],[x],[]);fzSave();fzMM=null;FZ.dirty=true;if(S.view==='fuji')renderCanvas()}}
   else if(id==='fz-date')fzDateChanged();
   else if(id==='fz-from'||id==='fz-to'){const f=document.getElementById('fz-from').value,t=document.getElementById('fz-to').value;if(f&&t){FZ.per={t:'range',f:f<=t?f:t,to:f<=t?t:f};FZ.shown=100;fzDirty()}}});
@@ -3137,6 +3255,7 @@ document.addEventListener('click',e=>{
   else if(a==='delmem-yes')removeMember(id);
   else if(a==='arch-month'){if(id===CUR()){A.month=id;renderCanvas()}else loadMonth(id)}
   else if(a==='view-img'){e.stopPropagation();openLb(id)}
+  else if(a==='dl-all'){e.stopPropagation();dlAll()}
   else if(a==='lb-close')closeLb();
   else if(a==='rmfile'){S.confirmFile=id;renderPanel()}
   else if(a==='rmfile-yes')removeFile(id);
